@@ -1,9 +1,17 @@
 <div class="main-layout">
-  <app-header></app-header>
-  <div class="main-layout-content">
-    <router-outlet></router-outlet>
-  </div>
-</div>
-<div class="cooming-soon">
+  <mat-sidenav-container class="sidenav-container">
 
+    <!-- Sidenav for Navigation Links -->
+    <mat-sidenav mode="side" opened class="sidenav">
+      <app-header></app-header>
+    </mat-sidenav>
+
+    <!-- Main content with header and content -->
+    <mat-sidenav-content>
+      <div class="main-layout-content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
+

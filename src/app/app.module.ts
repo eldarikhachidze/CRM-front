@@ -10,7 +10,7 @@ import { AuthComponent } from './pages/auth/auth.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import { ChipComponent } from './pages/chip/chip.component';
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { ChipComponent } from './pages/chip/chip.component';
     BrowserModule,
     BrowserAnimationsModule,  // Important for Material components
     MatToolbarModule,  // Add Material modules here
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule
   ],
   providers: [
     // {

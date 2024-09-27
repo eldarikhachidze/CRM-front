@@ -1,0 +1,45 @@
+<!-- slot-machine-list.component.html -->
+<div class="slot-machine-list">
+  <h2>Slot Machines</h2>
+
+  <table mat-table [dataSource]="slotMachines" class="mat-elevation-z8">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.name}} </td>
+    </ng-container>
+
+    <!-- Brand Column -->
+    <ng-container matColumnDef="brand">
+      <th mat-header-cell *matHeaderCellDef> Brand </th>
+      <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.brand}} </td>
+    </ng-container>
+
+    <!-- bvbMoney Column -->
+    <ng-container matColumnDef="bvbMoney">
+      <th mat-header-cell *matHeaderCellDef> Money </th>
+      <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.bvbMoney}} </td>
+    </ng-container>
+
+    <!-- Actions Column (Delete Button) -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let slotMachine">
+        <button mat-button color="warn" (click)="deleteSlotMachine(slotMachine.id)">Delete</button>
+      </td>
+    </ng-container>
+
+    <!-- Table Header -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <!-- Table Rows -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

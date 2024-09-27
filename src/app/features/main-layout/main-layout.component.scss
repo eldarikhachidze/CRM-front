@@ -1,7 +1,11 @@
 .main-layout {
   background-color: var(--Background, #011627);
-  .main-layout-content {
-    position: relative;
-    top: 80px;
-  }
+    .sidenav-container {
+      height: 100vh;  /* Full viewport height */
+      display: flex;
+      .sidenav {
+        width: 250px;
+        background-color: #f5f5f5;
+      }
+    }
 }
