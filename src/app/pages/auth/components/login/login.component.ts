@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {AuthService} from "../../../../core/services/auth.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AuthFacadeService} from "../../../../core/facade/auth-facade.service";
 
 @Component({
   selector: 'app-login',
@@ -15,21 +15,16 @@ export class LoginComponent {
   });
 
   constructor(
-    private authService: AuthService,
+    private authFacade: AuthFacadeService,
     private router: Router
     ) { }
 
   login(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
-    this.authService.login(this.form.value.username, this.form.value.password).subscribe(
-      res => {
-        this.authService.saveToken(res.token);
-        this.router.navigate(['/chip']);
-      },
-      err => {
-        console.error(err);
-      }
-    );
+
+    this.authFacade.login(this.form.value).subscribe(response => {
+      this.authFacade.handleLoginResponse(response);
+    });
   }
 }

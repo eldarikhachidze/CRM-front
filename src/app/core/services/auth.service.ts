@@ -1,25 +1,33 @@
 import { Injectable } from '@angular/core';
 import {BaseService} from "./base.service";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
+import {Login} from "../interfaces/auth";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends BaseService{
 
-  login(username: string, password: string): Observable<any> {
-    return this.post<any>('auth/login/', {username, password});
+  login(data: Login): Observable<any> {
+    return this.post('auth/login/', data)
+      .pipe(
+        tap(response => {
+          this.saveToken(response.accessToken, response.refreshToken);
+        })
+      )
   }
 
-  saveToken(token: string): void {
-    localStorage.setItem('authToken', token);
+  saveToken(accessToken: string, refreshToken: string): void {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('accessToken', refreshToken);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('accessToken');
   }
 
   logout(): void {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('accessToken');
   }
 }
