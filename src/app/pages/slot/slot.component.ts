@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SlotMachineService} from "../../core/services/slot-machine.service";
-import {Router} from "@angular/router";
 import {SlotMachine} from "../../core/interfaces/slot-machine";
+import {NotificationService} from "../../core/services/notification.service";
 
 @Component({
   selector: 'app-slot',
@@ -14,6 +14,7 @@ export class SlotComponent implements OnInit {
 
   constructor(
     private slotMachineService: SlotMachineService,
+    private notificationService: NotificationService,
   ) {
   }
 
@@ -27,10 +28,23 @@ export class SlotComponent implements OnInit {
     });
   }
 
-  // Delete a slot machine by id
   close(id: number, bvbMoney: number): void {
-    this.slotMachineService.closeSlotMachine(id, bvbMoney).subscribe((response) => {
-      this.getSlotMachines();
-    });
+    this.slotMachineService.closeSlotMachine(id, bvbMoney).subscribe(
+      (res) => {
+        if (res && res.success) {
+          this.notificationService.showSuccess(res.message);
+        } else {
+          this.notificationService.showError('An unknown error occurred. Please try again.');
+        }
+        this.getSlotMachines();
+      },
+      (error) => {
+        if (error.error && error.error.bvbMoney) {
+          this.notificationService.showError(error.error.bvbMoney[0]);
+        } else {
+          this.notificationService.showError('An unknown error occurred. Please try again.');
+        }
+      }
+    );
   }
 }

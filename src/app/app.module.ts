@@ -11,6 +11,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatTableModule} from "@angular/material/table";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    MatSnackBarModule,
     MainLayoutModule,
     BrowserModule,
     BrowserAnimationsModule,  // Important for Material components
