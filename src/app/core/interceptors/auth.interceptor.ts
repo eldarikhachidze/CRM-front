@@ -17,7 +17,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log('this.authFacade.getToken', this.authFacade.getToken())
     if (this.authFacade.getToken()) {
       request = request.clone({
         headers: request.headers.set('Authorization', `Bearer ${this.authFacade.getToken()}`)

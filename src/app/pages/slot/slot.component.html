@@ -1,38 +1,33 @@
-<!-- slot-machine-list.component.html -->
 <div class="slot-machine-list">
   <h2>Slot Machines</h2>
 
   <table mat-table [dataSource]="slotMachines" class="mat-elevation-z8">
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.id}} </td>
-    </ng-container>
-
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <th mat-header-cell *matHeaderCellDef> Name</th>
       <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.name}} </td>
     </ng-container>
 
     <!-- Brand Column -->
     <ng-container matColumnDef="brand">
-      <th mat-header-cell *matHeaderCellDef> Brand </th>
+      <th mat-header-cell *matHeaderCellDef> Brand</th>
       <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.brand}} </td>
     </ng-container>
 
-    <!-- bvbMoney Column -->
+    <!-- bvbMoney Column with Input Field -->
     <ng-container matColumnDef="bvbMoney">
-      <th mat-header-cell *matHeaderCellDef> Money </th>
-      <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.bvbMoney}} </td>
+      <th mat-header-cell *matHeaderCellDef> BVB Money</th>
+      <td mat-cell *matCellDef="let slotMachine">
+        <input matInput type="number" [(ngModel)]="slotMachine.bvbMoney" placeholder="Enter BVB money">
+      </td>
     </ng-container>
 
-    <!-- Actions Column (Delete Button) -->
+    <!-- Actions Column with Submit Button -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <th mat-header-cell *matHeaderCellDef> Actions</th>
       <td mat-cell *matCellDef="let slotMachine">
-        <button mat-button color="warn" (click)="deleteSlotMachine(slotMachine.id)">Delete</button>
+        <button mat-button color="primary" (click)="close(slotMachine.id, slotMachine.bvbMoney)">Close Slot</button>
       </td>
     </ng-container>
 

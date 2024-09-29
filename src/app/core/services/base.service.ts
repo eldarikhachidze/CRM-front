@@ -26,6 +26,9 @@ export class BaseService {
     return this.http.delete<t>(this.apiUrl + url)
   }
 
+  patch<t>(url: string, body: any): Observable<t> {
+    return this.http.patch<t>(this.apiUrl + url, body)
+  }
 
 }
 

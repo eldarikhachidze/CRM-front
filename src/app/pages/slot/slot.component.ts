@@ -10,11 +10,12 @@ import {SlotMachine} from "../../core/interfaces/slot-machine";
 })
 export class SlotComponent implements OnInit {
   slotMachines: SlotMachine[] = [];  // Use SlotMachine interface for type safety
-  displayedColumns: string[] = ['id', 'name', 'brand', 'bvbMoney', 'actions'];
+  displayedColumns: string[] = ['name', 'brand', 'bvbMoney', 'actions'];
+
   constructor(
     private slotMachineService: SlotMachineService,
-    private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.getSlotMachines();
@@ -27,9 +28,9 @@ export class SlotComponent implements OnInit {
   }
 
   // Delete a slot machine by id
-  deleteSlotMachine(id: number): void {
-    this.slotMachineService.deleteSlotMachine(id).subscribe(() => {
-      this.slotMachines = this.slotMachines.filter(machine => machine.id !== id);
+  close(id: number, bvbMoney: number): void {
+    this.slotMachineService.closeSlotMachine(id, bvbMoney).subscribe((response) => {
+      this.getSlotMachines();
     });
   }
 }

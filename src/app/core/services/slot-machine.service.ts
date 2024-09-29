@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BaseService} from "./base.service";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {SlotMachine} from "../interfaces/slot-machine";
 
 @Injectable({
@@ -12,19 +12,21 @@ export class SlotMachineService extends BaseService {
     return this.get<SlotMachine[]>('slotmachines');
   }
 
-  getSlotMachine(id: number) {
-    return this.get(`slot/${id}`);
+  closeSlotMachine(id: number, bvbMoney: number): Observable<any> {
+    return this.patch(`slot-machine/${id}/close/`, {bvbMoney})
+      .pipe(
+        tap((response) => {
+            console.log('Full response:', response);  // Log the full response to see its structure
+            if (response.message) {
+              console.log('Success:', response.message);  // Print success message if it exists
+            } else {
+              console.warn('No message found in response.');
+            }
+          },
+          (error) => {
+            console.error('Error:', error.error.message);  // Print error message
+          })
+      )
   }
 
-  createSlotMachine(data: any) {
-    return this.post('slot', data);
-  }
-
-  updateSlotMachine(id: number, data: any) {
-    return this.put(`slot/${id}`, data);
-  }
-
-  deleteSlotMachine(id: number) {
-    return this.delete(`slot/${id}`);
-  }
 }

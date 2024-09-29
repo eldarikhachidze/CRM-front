@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { SlotRoutingModule } from './slot-routing.module';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {SlotRoutingModule} from './slot-routing.module';
 import {SlotComponent} from "./slot.component";
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -14,8 +15,11 @@ import {MatButtonModule} from "@angular/material/button";
   imports: [
     CommonModule,
     SlotRoutingModule,
+    FormsModule,
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule
   ]
 })
-export class SlotModule { }
+export class SlotModule {
+}
