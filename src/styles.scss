@@ -11,11 +11,21 @@ body {
 
 
 .success-snackbar {
-  background-color: #4caf50 !important; // Green for success
-  color: white;
+  background-color: #4caf50 !important;
+  color: white !important;
 }
 
 .error-snackbar {
-  background-color: #f44336 !important; // Red for error
-  color: white;
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.dialog-h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
 }

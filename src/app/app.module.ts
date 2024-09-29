@@ -12,6 +12,7 @@ import {MatTableModule} from "@angular/material/table";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {ConfirmLogoutDialogComponent} from "./pages/components/confirm-logout-dialog/confirm-logout-dialog.component";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatToolbarModule,  // Add Material modules here
     MatButtonModule,
     MatTableModule,
+    ConfirmLogoutDialogComponent,
+    BrowserAnimationsModule,  // Required for MatSnackBar animations
+    MatSnackBarModule, // Required for MatSnackBar
   ],
   providers: [
     {
