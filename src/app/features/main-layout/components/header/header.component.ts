@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AuthFacadeService} from "../../../../core/facade/auth-facade.service";
 
 @Component({
   selector: 'app-header',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+
+  constructor(
+    private authFacade: AuthFacadeService
+  ) { }
+
+  logout(): void {
+    this.authFacade.logout();
+  }
 }

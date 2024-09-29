@@ -6,6 +6,8 @@ export interface Login {
 }
 
 export interface LoginResponse {
+  access: string;
+  refresh: string;
   user: User;
   token: Token;
   error?: any;
@@ -13,8 +15,7 @@ export interface LoginResponse {
 }
 
 export interface Token {
-  accessToken: string;
-  refreshToken: string;
+
 }
 
 export interface User {

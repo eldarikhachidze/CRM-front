@@ -16,7 +16,6 @@ export class LoginComponent {
 
   constructor(
     private authFacade: AuthFacadeService,
-    private router: Router
     ) { }
 
   login(): void {

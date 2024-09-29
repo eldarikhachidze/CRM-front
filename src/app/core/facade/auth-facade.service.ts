@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AuthService} from "../services/auth.service";
 import {Router} from "@angular/router";
-
 import {Observable} from "rxjs";
 import {Login, LoginResponse} from "../interfaces/auth";
 
@@ -10,19 +9,20 @@ import {Login, LoginResponse} from "../interfaces/auth";
 })
 export class AuthFacadeService {
 
-    constructor(
-      private authService: AuthService,
-      private router: Router
-    ) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+  }
 
   login(data: Login): Observable<LoginResponse> {
     return this.authService.login(data);
   }
 
   handleLoginResponse(response: LoginResponse): void {
-    const { accessToken, refreshToken } = response.token;
-    this.authService.saveToken(accessToken, refreshToken);
-    this.router.navigate(['/dashboard']);  // Redirect after successful login
+    const {access, refresh} = response;
+    this.authService.saveToken(access, refresh);
+    this.router.navigate(['/chip']);  // Redirect after successful login
   }
 
   logout(): void {
@@ -31,7 +31,7 @@ export class AuthFacadeService {
   }
 
   getToken(): string | null {
-    return this.authService.getToken();
+    return this.authService.token;
   }
 
 
