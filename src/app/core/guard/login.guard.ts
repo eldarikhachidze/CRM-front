@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, Router} from '@angular/router';
+import {CanActivate, Router} from "@angular/router";
 import {AuthFacadeService} from "../facade/auth-facade.service";
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
   constructor(
     private authFacade: AuthFacadeService,
     private router: Router
@@ -13,9 +13,8 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    const isLoggedIn = this.authFacade.isLoggedIn();  // Check for a valid token
-
-    if (!isLoggedIn) {
+    if (this.authFacade.isLoggedIn()) {
+      this.router.navigate(['/slot']);
       return false;
     }
     return true;
