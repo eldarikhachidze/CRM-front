@@ -29,3 +29,12 @@ body {
   display: flex;
   justify-content: flex-end;
 }
+
+.mat-mdc-form-field {
+  padding: 5px 0;
+  width: 100%;
+}
+
+.mat-mdc-form-field-bottom-align {
+  display: none;
+}

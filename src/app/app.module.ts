@@ -13,6 +13,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ConfirmLogoutDialogComponent} from "./pages/components/confirm-logout-dialog/confirm-logout-dialog.component";
+import {TransactionModule} from "./pages/transaction/transaction.module";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {ConfirmLogoutDialogComponent} from "./pages/components/confirm-logout-di
     ConfirmLogoutDialogComponent,
     BrowserAnimationsModule,  // Required for MatSnackBar animations
     MatSnackBarModule, // Required for MatSnackBar
+    TransactionModule,
   ],
   providers: [
     {
@@ -44,7 +46,7 @@ import {ConfirmLogoutDialogComponent} from "./pages/components/confirm-logout-di
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })

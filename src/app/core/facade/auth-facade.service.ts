@@ -22,7 +22,7 @@ export class AuthFacadeService {
   handleLoginResponse(response: LoginResponse): void {
     const {access, refresh} = response;
     this.authService.saveToken(access, refresh);
-    this.router.navigate(['/chip']);  // Redirect after successful login
+    this.router.navigate(['/slot']);  // Redirect after successful login
   }
 
   logout(): void {
@@ -34,5 +34,9 @@ export class AuthFacadeService {
     return this.authService.token;
   }
 
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return !!token;
+  }
 
 }

@@ -29,6 +29,12 @@ export class SlotComponent implements OnInit {
   }
 
   close(id: number, bvbMoney: number): void {
+
+    if (!bvbMoney || isNaN(bvbMoney)) {
+      this.notificationService.showError('Please enter the amount of BVB Money to close the slot machine.');
+      return;
+    }
+
     this.slotMachineService.closeSlotMachine(id, bvbMoney).subscribe(
       (res) => {
         if (res && res.success) {
