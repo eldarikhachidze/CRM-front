@@ -1,7 +1,12 @@
 .slot-machine-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 20px;
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 700px; /* Two columns: 1fr for table, 300px for progress bar */
+    gap: 20px;
+    padding: 0 50px;
+
+    .table-container {
+      overflow: auto;
+    }
+  }
 }

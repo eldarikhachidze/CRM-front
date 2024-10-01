@@ -12,6 +12,7 @@ export class SlotComponent implements OnInit {
   slotMachines: SlotMachine[] = [];  // Use SlotMachine interface for type safety
   displayedColumns: string[] = ['name', 'brand', 'bvbMoney', 'actions'];
 
+
   constructor(
     private slotMachineService: SlotMachineService,
     private notificationService: NotificationService,
@@ -52,5 +53,29 @@ export class SlotComponent implements OnInit {
         }
       }
     );
+  }
+
+  getTotalBvbMoney(): number {
+    return this.slotMachines.reduce((total, slotMachine) => total + slotMachine.bvbMoney, 0);
+  }
+
+  getMaxBvbMoney(): number {
+    let maxBvbMoney = 100;
+    const totalBvbMoney = this.getTotalBvbMoney();
+
+    while (totalBvbMoney > maxBvbMoney) {
+      maxBvbMoney *= 10;
+    }
+
+    return maxBvbMoney;
+  }
+
+  calculateStrokeDashArray(): string {
+    const totalBvbMoney = this.getTotalBvbMoney();
+    const maxBvbMoney = this.getMaxBvbMoney();
+    const percentage = (totalBvbMoney / maxBvbMoney) * 100;
+    const strokeLength = 125.6;  // Approximate length of a half circle
+    const filledLength = (strokeLength * percentage) / 100;
+    return `${filledLength} ${strokeLength - filledLength}`;
   }
 }

@@ -1,10 +1,18 @@
 .mat-toolbar {
-  background-color: #1976d2;
+  background-color: #926dde;
   color: white;
 }
-/* Navigation list item styling */
-.mat-nav-list {
+
+.custom-nav-list {
   padding-top: 8px;
+}
+
+::ng-deep .custom-nav-list .mat-mdc-list-item-unscoped-content {
+  color: #ffffff !important;
+}
+
+.custom-divider {
+  background-color: #ffffff !important;
 }
 
 .mat-list-item {
@@ -12,6 +20,7 @@
   padding: 10px 16px;
 }
 
-.mat-list-item.active {
-  background-color: #e0e0e0; /* Highlight active navigation item */
+.custom-nav-list a.active {
+  background-color: #33cabb;
+  color: #ffffff;
 }
