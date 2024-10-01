@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SlotMachineService} from "../../core/services/slot-machine.service";
 import {SlotMachine} from "../../core/interfaces/slot-machine";
 import {NotificationService} from "../../core/services/notification.service";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-slot',
@@ -11,6 +13,11 @@ import {NotificationService} from "../../core/services/notification.service";
 export class SlotComponent implements OnInit {
   slotMachines: SlotMachine[] = [];  // Use SlotMachine interface for type safety
   displayedColumns: string[] = ['name', 'brand', 'bvbMoney', 'actions'];
+
+  dataSource = new MatTableDataSource<{ brand: string, quantity: number, totalMoney: number }>();
+  @ViewChild(MatSort) sort!: MatSort;
+  displayedColumnsForProgress: string[] = ['brand', 'quantity', 'totalMoney'];
+  brandsWithData: { brand: string, quantity: number, totalMoney: number }[] = [];
 
 
   constructor(
@@ -26,8 +33,36 @@ export class SlotComponent implements OnInit {
   getSlotMachines(): void {
     this.slotMachineService.getSlotMachines().subscribe((data) => {
       this.slotMachines = data;
+
+      const brandDataMap: { [key: string]: { quantity: number, totalMoney: number } } = {};
+
+      data.forEach(slotMachine => {
+        const brand = slotMachine.brand;
+        const bvbMoney = slotMachine.bvbMoney || 0;
+
+        if (brandDataMap[brand]) {
+          brandDataMap[brand].quantity++;
+          brandDataMap[brand].totalMoney += bvbMoney;
+        } else {
+          brandDataMap[brand] = {
+            quantity: 1,
+            totalMoney: bvbMoney
+          };
+        }
+      });
+
+
+      this.brandsWithData = Object.keys(brandDataMap).map(brand => ({
+        brand,
+        quantity: brandDataMap[brand].quantity,
+        totalMoney: brandDataMap[brand].totalMoney
+      }));
+
+      this.dataSource = new MatTableDataSource(this.brandsWithData);
+      this.dataSource.sort = this.sort;
     });
   }
+
 
   close(id: number, bvbMoney: number): void {
 
@@ -53,6 +88,10 @@ export class SlotComponent implements OnInit {
         }
       }
     );
+  }
+
+  getSlotMachinesByBrand(brand: string) {
+    console.log(brand)
   }
 
   getTotalBvbMoney(): number {

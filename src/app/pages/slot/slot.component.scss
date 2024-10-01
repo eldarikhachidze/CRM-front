@@ -1,7 +1,7 @@
 .slot-machine-list {
   .grid-container {
     display: grid;
-    grid-template-columns: 1fr 700px; /* Two columns: 1fr for table, 300px for progress bar */
+    grid-template-columns: 1fr 700px;
     gap: 20px;
     padding: 0 50px;
 
