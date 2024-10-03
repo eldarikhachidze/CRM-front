@@ -13,7 +13,7 @@ export class SlotMachineService extends BaseService {
   }
 
   closeSlotMachine(id: number, bvbMoney: number): Observable<any> {
-    return this.patch(`slot-machine/${id}/close/`, {bvbMoney})
+    return this.put(`slot/daily-amounts/${id}/`, {bvbMoney})
       .pipe(
         catchError(error => {
           console.log(error)

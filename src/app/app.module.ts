@@ -14,7 +14,6 @@ import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ConfirmLogoutDialogComponent} from "./pages/components/confirm-logout-dialog/confirm-logout-dialog.component";
 import {TransactionModule} from "./pages/transaction/transaction.module";
-
 @NgModule({
   declarations: [
     AppComponent,

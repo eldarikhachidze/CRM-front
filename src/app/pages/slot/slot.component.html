@@ -1,46 +1,58 @@
+
 <div class="slot-machine-list">
-  <h1>Slots</h1>
   <div class="grid-container">
     <div class="table-container">
-      <table mat-table [dataSource]="slotMachines" class="mat-elevation-z8">
+      <div *ngFor="let hall of halls">
+        <!-- Hall or Pete's Name -->
+        <h2>{{ hall.name }}</h2>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name</th>
-          <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.name}} </td>
-        </ng-container>
+        <!-- Slot Machines Table -->
+        <table mat-table [dataSource]="hall.slot_machines" class="mat-elevation-z8">
 
-        <!-- Brand Column -->
-        <ng-container matColumnDef="brand">
-          <th mat-header-cell *matHeaderCellDef> Brand</th>
-          <td mat-cell *matCellDef="let slotMachine"> {{slotMachine.brand}} </td>
-        </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let slotMachine"> {{ slotMachine.name }} </td>
+          </ng-container>
 
-        <!-- bvbMoney Column with Input Field -->
-        <ng-container matColumnDef="bvbMoney">
-          <th mat-header-cell *matHeaderCellDef> BVB Money</th>
-          <td mat-cell *matCellDef="let slotMachine">
-            <mat-form-field>
-              <mat-label>Enter Money</mat-label>
-              <input matInput [(ngModel)]="slotMachine.bvbMoney" placeholder="Enter BVB money">
-            </mat-form-field>
-          </td>
-        </ng-container>
+          <!-- Brand Column -->
+          <ng-container matColumnDef="brand">
+            <th mat-header-cell *matHeaderCellDef> Brand </th>
+            <td mat-cell *matCellDef="let slotMachine"> {{ slotMachine.brand }} </td>
+          </ng-container>
 
-        <!-- Actions Column with Submit Button -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef> Actions</th>
-          <td mat-cell *matCellDef="let slotMachine">
-            <button mat-button color="primary" (click)="close(slotMachine.id, slotMachine.bvbMoney)">Close Slot</button>
-          </td>
-        </ng-container>
+          <!-- BVB Money Column -->
+          <ng-container matColumnDef="bvbMoney">
+            <th mat-header-cell *matHeaderCellDef> BVB Money </th>
+            <td mat-cell *matCellDef="let slotMachine">
+              <mat-form-field>
+                <mat-label>Enter Money</mat-label>
+                <input matInput [(ngModel)]="slotMachine.bvbMoney" placeholder="Enter BVB money">
+              </mat-form-field>
+            </td>
+          </ng-container>
 
-        <!-- Table Header -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let slotMachine">
+              <button mat-button color="primary" (click)="close(slotMachine.id, slotMachine.bvbMoney)">
+                Close Slot
+              </button>
+            </td>
+          </ng-container>
 
-        <!-- Table Rows -->
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+          <!-- Table Header -->
+          <tr mat-header-row *matHeaderRowDef="['name', 'brand', 'bvbMoney', 'actions']"></tr>
+
+          <!-- Table Rows -->
+          <tr mat-row *matRowDef="let row; columns: ['name', 'brand', 'bvbMoney', 'actions']"></tr>
+        </table>
+      </div>
+
+
+
+
     </div>
     <div class="progress-container">
       <div class="progress-card">
@@ -54,7 +66,7 @@
           <text x="100" y="10" font-size="8" text-anchor="end" fill="green">{{ getMaxBvbMoney() }}</text>
 
           <text x="50" y="35" font-size="5" text-anchor="middle" fill="green">Total money</text>
-          <text x="50" y="45" font-size="8" text-anchor="middle" fill="black">{{ getTotalBvbMoney() }}</text>
+          <text x="50" y="45" font-size="8" text-anchor="middle" fill="black">{{ 1000 }}</text>
         </svg>
       </div>
 

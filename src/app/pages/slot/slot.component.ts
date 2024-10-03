@@ -1,9 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SlotMachineService} from "../../core/services/slot-machine.service";
+import {SlotService} from "../../core/services/slot.service";
+import {FullDatabaseResponse, Hall, SlotPit} from "../../core/interfaces/slot";
 import {SlotMachine} from "../../core/interfaces/slot-machine";
-import {NotificationService} from "../../core/services/notification.service";
-import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
+import {MatSort} from "@angular/material/sort";
+import {SlotMachineService} from "../../core/services/slot-machine.service";
+import {NotificationService} from "../../core/services/notification.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-slot',
@@ -11,6 +14,8 @@ import {MatTableDataSource} from "@angular/material/table";
   styleUrls: ['./slot.component.scss']
 })
 export class SlotComponent implements OnInit {
+  gameDays: SlotPit[] = [];
+  halls: Hall[] = [];
   slotMachines: SlotMachine[] = [];  // Use SlotMachine interface for type safety
   displayedColumns: string[] = ['name', 'brand', 'bvbMoney', 'actions'];
 
@@ -21,14 +26,30 @@ export class SlotComponent implements OnInit {
 
 
   constructor(
+    private slotService: SlotService,
     private slotMachineService: SlotMachineService,
     private notificationService: NotificationService,
   ) {
   }
 
   ngOnInit() {
-    this.getSlotMachines();
+    this.getHallsWithSlotMachines()
   }
+
+  getHallsWithSlotMachines(): void {
+    this.slotService.getHallsWithSlotMachines().subscribe((data: Hall[]) => {
+      this.halls = data;
+      console.log(this.halls); // Logs the halls with slot machines
+    });
+  }
+
+  getSlotPitData(): void {
+    this.slotService.getGameDayData().subscribe((data: FullDatabaseResponse) => {
+      this.gameDays = data.game_days;
+      console.log(this.gameDays); // This will log an object with halls and game_days arrays
+    });
+  }
+
 
   getSlotMachines(): void {
     this.slotMachineService.getSlotMachines().subscribe((data) => {
@@ -38,17 +59,13 @@ export class SlotComponent implements OnInit {
 
       data.forEach(slotMachine => {
         const brand = slotMachine.brand;
-        const bvbMoney = slotMachine.bvbMoney || 0;
+        // const bvbMoney = slotMachine.bvbMoney || 0;
 
         if (brandDataMap[brand]) {
           brandDataMap[brand].quantity++;
-          brandDataMap[brand].totalMoney += bvbMoney;
-        } else {
-          brandDataMap[brand] = {
-            quantity: 1,
-            totalMoney: bvbMoney
-          };
+          // brandDataMap[brand].totalMoney += bvbMoney;
         }
+
       });
 
 
@@ -70,7 +87,7 @@ export class SlotComponent implements OnInit {
       this.notificationService.showError('Please enter the amount of BVB Money to close the slot machine.');
       return;
     }
-
+    console.log(id, bvbMoney)
     this.slotMachineService.closeSlotMachine(id, bvbMoney).subscribe(
       (res) => {
         if (res && res.success) {
@@ -78,7 +95,7 @@ export class SlotComponent implements OnInit {
         } else {
           this.notificationService.showError('An unknown error occurred. Please try again.');
         }
-        this.getSlotMachines();
+
       },
       (error) => {
         if (error.error && error.error.bvbMoney) {
@@ -94,13 +111,9 @@ export class SlotComponent implements OnInit {
     console.log(brand)
   }
 
-  getTotalBvbMoney(): number {
-    return this.slotMachines.reduce((total, slotMachine) => total + slotMachine.bvbMoney, 0);
-  }
-
   getMaxBvbMoney(): number {
     let maxBvbMoney = 100;
-    const totalBvbMoney = this.getTotalBvbMoney();
+    const totalBvbMoney = 1000
 
     while (totalBvbMoney > maxBvbMoney) {
       maxBvbMoney *= 10;
@@ -110,7 +123,7 @@ export class SlotComponent implements OnInit {
   }
 
   calculateStrokeDashArray(): string {
-    const totalBvbMoney = this.getTotalBvbMoney();
+    const totalBvbMoney = 1000
     const maxBvbMoney = this.getMaxBvbMoney();
     const percentage = (totalBvbMoney / maxBvbMoney) * 100;
     const strokeLength = 125.6;  // Approximate length of a half circle
