@@ -1,5 +1,6 @@
 export interface SlotMachine {
   id: number;
+  daily_amounts: any[];
   name: string;
   brand: string;
   created_at: string;

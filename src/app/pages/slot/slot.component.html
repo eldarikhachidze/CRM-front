@@ -1,9 +1,8 @@
-
 <div class="slot-machine-list">
   <div class="grid-container">
     <div class="table-container">
-      <div *ngFor="let hall of halls">
-        <!-- Hall or Pete's Name -->
+      <div *ngFor="let hall of slotPitData.halls">
+        <!-- Hall Name -->
         <h2>{{ hall.name }}</h2>
 
         <!-- Slot Machines Table -->
@@ -11,30 +10,27 @@
 
           <!-- Name Column -->
           <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <th mat-header-cell *matHeaderCellDef> Name</th>
             <td mat-cell *matCellDef="let slotMachine"> {{ slotMachine.name }} </td>
           </ng-container>
 
           <!-- Brand Column -->
           <ng-container matColumnDef="brand">
-            <th mat-header-cell *matHeaderCellDef> Brand </th>
+            <th mat-header-cell *matHeaderCellDef> Brand</th>
             <td mat-cell *matCellDef="let slotMachine"> {{ slotMachine.brand }} </td>
           </ng-container>
 
-          <!-- BVB Money Column -->
-          <ng-container matColumnDef="bvbMoney">
-            <th mat-header-cell *matHeaderCellDef> BVB Money </th>
+          <!-- Daily Money Column -->
+          <ng-container matColumnDef="dailyMoney">
+            <th mat-header-cell *matHeaderCellDef> Daily Money</th>
             <td mat-cell *matCellDef="let slotMachine">
-              <mat-form-field>
-                <mat-label>Enter Money</mat-label>
-                <input matInput [(ngModel)]="slotMachine.bvbMoney" placeholder="Enter BVB money">
-              </mat-form-field>
+              <span *ngFor="let amount of slotMachine.daily_amounts">{{ amount.amount || 0 }}</span>
             </td>
           </ng-container>
 
           <!-- Actions Column -->
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <th mat-header-cell *matHeaderCellDef> Actions</th>
             <td mat-cell *matCellDef="let slotMachine">
               <button mat-button color="primary" (click)="close(slotMachine.id, slotMachine.bvbMoney)">
                 Close Slot
@@ -43,14 +39,19 @@
           </ng-container>
 
           <!-- Table Header -->
-          <tr mat-header-row *matHeaderRowDef="['name', 'brand', 'bvbMoney', 'actions']"></tr>
+          <tr mat-header-row *matHeaderRowDef="['name', 'brand', 'dailyMoney', 'actions']"></tr>
 
           <!-- Table Rows -->
-          <tr mat-row *matRowDef="let row; columns: ['name', 'brand', 'bvbMoney', 'actions']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name', 'brand', 'dailyMoney', 'actions']"></tr>
         </table>
+
+        <!-- Daily Total for the Hall -->
+        <p><strong>Daily Money Sum:</strong> {{ hall.daily_money_sum }}</p>
+
       </div>
+      <p><strong>Total Daily Amount for All Halls:</strong> {{ slotPitData.total_daily_amount }}</p>
 
-
+      <!-- Overall Total for All Halls -->
 
 
     </div>

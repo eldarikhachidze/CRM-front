@@ -14,8 +14,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./slot.component.scss']
 })
 export class SlotComponent implements OnInit {
-  gameDays: SlotPit[] = [];
-  halls: Hall[] = [];
+  slotPitData: FullDatabaseResponse = {halls: [], game_days: [], total_daily_amount: 0};
   slotMachines: SlotMachine[] = [];  // Use SlotMachine interface for type safety
   displayedColumns: string[] = ['name', 'brand', 'bvbMoney', 'actions'];
 
@@ -33,20 +32,23 @@ export class SlotComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getHallsWithSlotMachines()
+    // this.getHallsWithSlotMachines()
+    this.getSlotHallData()
   }
 
-  getHallsWithSlotMachines(): void {
-    this.slotService.getHallsWithSlotMachines().subscribe((data: Hall[]) => {
-      this.halls = data;
-      console.log(this.halls); // Logs the halls with slot machines
-    });
-  }
 
-  getSlotPitData(): void {
+  // getHallsWithSlotMachines(): void {
+  //   this.slotService.getHallsWithSlotMachines().subscribe((data: Hall[]) => {
+  //     this.halls = data;
+  //     console.log(this.halls); // Logs the halls with slot machines
+  //   });
+  // }
+
+  getSlotHallData(): void {
     this.slotService.getGameDayData().subscribe((data: FullDatabaseResponse) => {
-      this.gameDays = data.game_days;
-      console.log(this.gameDays); // This will log an object with halls and game_days arrays
+      this.slotPitData = data;
+      console.log(data); // This will log an object with halls and game_days arrays
+      console.log(this.slotPitData); // This will log an object with halls and game_days arrays
     });
   }
 

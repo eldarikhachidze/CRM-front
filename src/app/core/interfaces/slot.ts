@@ -29,6 +29,7 @@ export interface SlotPit {
 export interface Hall {
   id: number;
   slot_machines: SlotMachine[];
+  daily_money_sum: number;
   name: string;
   created_at: string;
   updated_at?: any;
@@ -37,5 +38,7 @@ export interface Hall {
 
 export interface FullDatabaseResponse {
   halls: Hall[];
-  game_days: SlotPit[];
+  game_days: any[];
+  total_daily_amount: number;
 }
+
