@@ -1,5 +1,5 @@
 <div class="progress-container">
-  <div class="progress-card">
+  <div class="progress-card" *ngIf="totalBvbMoney">
     <svg class="progress-bar" viewBox="0 0 100 50" width="200" height="120">
       <path class="background" d="M 10 50 A 40 40 0 0 1 90 50" stroke="lightgray" stroke-width="2"
             fill="none"></path>
@@ -9,15 +9,19 @@
       <text x="0" y="10" font-size="8" fill="green">0</text>
       <text x="100" y="10" font-size="8" text-anchor="end" fill="green">{{ getMaxBvbMoney() }}</text>
 
-      <text x="50" y="35" font-size="5" text-anchor="middle" fill="green">Total money</text>
-      <text x="50" y="45" font-size="8" text-anchor="middle" fill="black"></text>
+      <text x="50" y="35" font-size="8" text-anchor="middle" fill="green">Total money</text>
+      <text x="50" y="40" font-size="5" text-anchor="middle" fill="black">{{totalBvbMoney}}₾</text>
+      <text x="50" y="48" font-size="8" text-anchor="middle" fill="black">{{ getTotalMoneyByDollar() }}$</text>
+
     </svg>
   </div>
 
   <!-- Debugging: Check if the hallData is being loaded -->
-  <div *ngFor="let hall of hallData">
-    <h2>{{ hall.name }}</h2>
-    <h4>{{ hall.daily_money_sum }}₾</h4>
+  <div class="hall-box" *ngFor="let hall of hallData">
+    <span>HALL NAME: <h2> {{ hall.name }}</h2></span>
+    <span>TOTAL MONEY: <h4>{{ hall.daily_money_sum }}₾</h4></span>
+
+
     <table mat-table [dataSource]="getBrandList(hall.slot_machines_by_brand)" class="mat-elevation-z8">
 
       <!-- Brand Column -->

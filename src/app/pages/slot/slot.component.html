@@ -1,7 +1,8 @@
 <div class="slot-machine-list">
   <div class="grid-container">
     <div class="table-container">
-      <div *ngFor="let hall of slotPitData.halls">
+      <h1>Game Date: {{ gameDate }}</h1>
+      <div *ngFor="let hall of slotPitData.halls" class="slot-box">
         <!-- Hall Name -->
         <h2>{{ hall.name }}</h2>
 

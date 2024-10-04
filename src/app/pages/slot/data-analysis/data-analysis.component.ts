@@ -9,9 +9,10 @@ import {Hall} from "../../../core/interfaces/slot";
 })
 export class DataAnalysisComponent implements OnInit {
   hallData: Hall[] = [];
+  totalBvbMoney = 0
+
   constructor(
     private slotService: SlotService,
-
   ) {
   }
 
@@ -22,7 +23,8 @@ export class DataAnalysisComponent implements OnInit {
   getHallData(): void {
     this.slotService.getHalls().subscribe((data: Hall[]) => {
       this.hallData = data;
-      console.log(this.hallData); // Logs the halls with slot machines
+      this.totalBvbMoney = this.hallData.reduce((acc, hall) => acc + hall.daily_money_sum, 0);
+
     });
   }
 
@@ -33,9 +35,10 @@ export class DataAnalysisComponent implements OnInit {
       total_money: slot_machines_by_brand[key].total_money
     }));
   }
+
   getMaxBvbMoney(): number {
     let maxBvbMoney = 100;
-    const totalBvbMoney = 1000
+    const totalBvbMoney = this.totalBvbMoney
 
     while (totalBvbMoney > maxBvbMoney) {
       maxBvbMoney *= 10;
@@ -44,8 +47,13 @@ export class DataAnalysisComponent implements OnInit {
     return maxBvbMoney;
   }
 
+  getTotalMoneyByDollar(): number {
+    const res = this.totalBvbMoney / 2.70; // Declare the variable `res` using `const`
+    return parseFloat(res.toFixed(2)); // Use `parseFloat` to convert the fixed string to a number
+  }
+
   calculateStrokeDashArray(): string {
-    const totalBvbMoney = 1000
+    const totalBvbMoney = this.totalBvbMoney
     const maxBvbMoney = this.getMaxBvbMoney();
     const percentage = (totalBvbMoney / maxBvbMoney) * 100;
     const strokeLength = 125.6;  // Approximate length of a half circle
