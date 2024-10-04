@@ -8,11 +8,13 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatSortModule} from "@angular/material/sort";
+import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 
 
 @NgModule({
   declarations: [
-    SlotComponent
+    SlotComponent,
+    DataAnalysisComponent
   ],
   imports: [
     CommonModule,

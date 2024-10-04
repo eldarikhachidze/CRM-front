@@ -17,8 +17,8 @@ export class SlotService extends BaseService{
     return this.post('slot/game_days', data);
   }
 
-  getHallsWithSlotMachines(): Observable<Hall[]> {
-    return this.get<Hall[]>('slot/halls-with-slot-machines/');
+  getHalls(): Observable<Hall[]> {
+    return this.get<Hall[]>('slot/halls/');
   }
   getGameDayData(): Observable<FullDatabaseResponse> {
     return this.get<FullDatabaseResponse>(`slot/full-database/`);

@@ -17,11 +17,11 @@ export class SlotComponent implements OnInit {
   slotPitData: FullDatabaseResponse = {halls: [], game_days: [], total_daily_amount: 0};
   slotMachines: SlotMachine[] = [];  // Use SlotMachine interface for type safety
   displayedColumns: string[] = ['name', 'brand', 'bvbMoney', 'actions'];
-
+  hallData: Hall = {id: 0, slot_machines: [], daily_money_sum: 0, slot_machines_by_brand: [], name: '', created_at: ''};
   dataSource = new MatTableDataSource<{ brand: string, quantity: number, totalMoney: number }>();
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumnsForProgress: string[] = ['brand', 'quantity', 'totalMoney'];
-  brandsWithData: { brand: string, quantity: number, totalMoney: number }[] = [];
+  brandsWithData: Hall[] = [];
 
 
   constructor(
@@ -33,7 +33,7 @@ export class SlotComponent implements OnInit {
 
   ngOnInit() {
     // this.getHallsWithSlotMachines()
-    this.getSlotHallData()
+    this.getSlotsByHall()
   }
 
 
@@ -44,42 +44,20 @@ export class SlotComponent implements OnInit {
   //   });
   // }
 
-  getSlotHallData(): void {
+  getSlotsByHall(): void {
     this.slotService.getGameDayData().subscribe((data: FullDatabaseResponse) => {
       this.slotPitData = data;
-      console.log(data); // This will log an object with halls and game_days arrays
-      console.log(this.slotPitData); // This will log an object with halls and game_days arrays
     });
   }
 
 
-  getSlotMachines(): void {
-    this.slotMachineService.getSlotMachines().subscribe((data) => {
-      this.slotMachines = data;
-
-      const brandDataMap: { [key: string]: { quantity: number, totalMoney: number } } = {};
-
-      data.forEach(slotMachine => {
-        const brand = slotMachine.brand;
-        // const bvbMoney = slotMachine.bvbMoney || 0;
-
-        if (brandDataMap[brand]) {
-          brandDataMap[brand].quantity++;
-          // brandDataMap[brand].totalMoney += bvbMoney;
-        }
-
-      });
-
-
-      this.brandsWithData = Object.keys(brandDataMap).map(brand => ({
-        brand,
-        quantity: brandDataMap[brand].quantity,
-        totalMoney: brandDataMap[brand].totalMoney
-      }));
-
-      this.dataSource = new MatTableDataSource(this.brandsWithData);
-      this.dataSource.sort = this.sort;
-    });
+  getBrandList(slot_machines_by_brand: any): Array<any> {
+    console.log(slot_machines_by_brand)
+    return Object.keys(slot_machines_by_brand).map(key => ({
+      name: key,
+      count: slot_machines_by_brand[key].count,
+      total_money: slot_machines_by_brand[key].total_money
+    }));
   }
 
 
@@ -113,23 +91,5 @@ export class SlotComponent implements OnInit {
     console.log(brand)
   }
 
-  getMaxBvbMoney(): number {
-    let maxBvbMoney = 100;
-    const totalBvbMoney = 1000
 
-    while (totalBvbMoney > maxBvbMoney) {
-      maxBvbMoney *= 10;
-    }
-
-    return maxBvbMoney;
-  }
-
-  calculateStrokeDashArray(): string {
-    const totalBvbMoney = 1000
-    const maxBvbMoney = this.getMaxBvbMoney();
-    const percentage = (totalBvbMoney / maxBvbMoney) * 100;
-    const strokeLength = 125.6;  // Approximate length of a half circle
-    const filledLength = (strokeLength * percentage) / 100;
-    return `${filledLength} ${strokeLength - filledLength}`;
-  }
 }

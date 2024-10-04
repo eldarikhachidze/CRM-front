@@ -25,11 +25,18 @@ export interface SlotPit {
   updated_at?: any;
   deleted_at?: any;
 }
-
+export interface Group {
+  count: number;
+  total_money: number;
+}
+export interface Slotmachinesbybrand {
+  brand: Group;
+}
 export interface Hall {
   id: number;
   slot_machines: SlotMachine[];
   daily_money_sum: number;
+  slot_machines_by_brand: Slotmachinesbybrand[];
   name: string;
   created_at: string;
   updated_at?: any;

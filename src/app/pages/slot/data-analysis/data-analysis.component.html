@@ -1,0 +1,49 @@
+<div class="progress-container">
+  <div class="progress-card">
+    <svg class="progress-bar" viewBox="0 0 100 50" width="200" height="120">
+      <path class="background" d="M 10 50 A 40 40 0 0 1 90 50" stroke="lightgray" stroke-width="2"
+            fill="none"></path>
+      <path class="foreground" [attr.stroke-dasharray]="calculateStrokeDashArray()" stroke="green" stroke-width="2"
+            fill="none" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+
+      <text x="0" y="10" font-size="8" fill="green">0</text>
+      <text x="100" y="10" font-size="8" text-anchor="end" fill="green">{{ getMaxBvbMoney() }}</text>
+
+      <text x="50" y="35" font-size="5" text-anchor="middle" fill="green">Total money</text>
+      <text x="50" y="45" font-size="8" text-anchor="middle" fill="black"></text>
+    </svg>
+  </div>
+
+  <!-- Debugging: Check if the hallData is being loaded -->
+  <div *ngFor="let hall of hallData">
+    <h2>{{ hall.name }}</h2>
+    <h4>{{ hall.daily_money_sum }}₾</h4>
+    <table mat-table [dataSource]="getBrandList(hall.slot_machines_by_brand)" class="mat-elevation-z8">
+
+      <!-- Brand Column -->
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef> Brand</th>
+        <td mat-cell *matCellDef="let brand"> {{ brand.name }} </td>
+      </ng-container>
+
+      <!-- Quantity Column -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> Quantity</th>
+        <td mat-cell *matCellDef="let brand"> {{ brand.count }} </td>
+      </ng-container>
+
+      <!-- Total Money Column -->
+      <ng-container matColumnDef="totalMoney">
+        <th mat-header-cell *matHeaderCellDef> Total Money</th>
+        <td mat-cell *matCellDef="let brand"> {{ brand.total_money }} </td>
+      </ng-container>
+
+
+      <!-- Table Header -->
+      <tr mat-header-row *matHeaderRowDef="['brand', 'quantity', 'totalMoney']"></tr>
+
+      <!-- Table Rows -->
+      <tr mat-row *matRowDef="let row; columns: ['brand', 'quantity', 'totalMoney']"></tr>
+    </table>
+  </div>
+</div>
