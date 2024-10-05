@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import {Observable, tap} from 'rxjs';
+import {Observable} from 'rxjs';
 import {AuthFacadeService} from "../facade/auth-facade.service";
 
 @Injectable()

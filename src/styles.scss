@@ -40,6 +40,8 @@ body {
 }
 
 .progress-container {
+  position: fixed;
+  pointer-events: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
@@ -49,7 +51,6 @@ body {
   padding: 20px;
   background-color: #ddd2d2;
   border-radius: 8px;
-  overflow: hidden;
 
   .hall-box {
     background-color: #b6d3b5;

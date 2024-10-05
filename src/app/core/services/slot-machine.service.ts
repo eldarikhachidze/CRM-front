@@ -9,15 +9,11 @@ import {Hall} from "../interfaces/slot";
 })
 export class SlotMachineService extends BaseService {
 
-  // getHall(): Observable<Hall[]> {
-  //   return this.get<Hall[]>('slot/halls/');
-  // }
 
   closeSlotMachine(id: number, bvbMoney: number): Observable<any> {
-    return this.put(`slot/daily-amounts/${id}/`, {bvbMoney})
+    return this.put(`slot/close-slot-machine/${id}/`, {amount: bvbMoney})
       .pipe(
         catchError(error => {
-          console.log(error)
           return throwError(error)
         })
       )
