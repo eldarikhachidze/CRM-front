@@ -5,9 +5,12 @@ import {SlotComponent} from "./slot.component";
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatSortModule} from "@angular/material/sort";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatSelectModule} from "@angular/material/select";
+import {MatNativeDateModule} from "@angular/material/core";
 
 
 @NgModule({
@@ -21,8 +24,12 @@ import {MatSortModule} from "@angular/material/sort";
     MatTableModule,
     MatButtonModule,
     MatInputModule,
+    MatNativeDateModule,
     MatProgressSpinnerModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    ReactiveFormsModule,
   ]
 })
 export class SlotModule {

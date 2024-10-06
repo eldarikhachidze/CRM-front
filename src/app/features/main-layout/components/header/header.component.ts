@@ -20,7 +20,13 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    const dialogRef = this.dialog.open(ConfirmLogoutDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmLogoutDialogComponent, {
+      data: {
+        contentText: 'Do you really want to Log out?',
+        confirmButtonText: 'Yes, Log out'
+      }
+
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

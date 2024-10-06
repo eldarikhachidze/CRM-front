@@ -39,69 +39,81 @@ body {
   display: none;
 }
 
-.progress-container {
-  position: fixed;
-  pointer-events: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 20px;
-  align-items: start;
-  justify-items: start;
-  padding: 20px;
-  background-color: #ddd2d2;
-  border-radius: 8px;
+.progress {
+  .progress-content {
+    background-color: #ddd2d2;
 
-  .hall-box {
-    background-color: #b6d3b5;
-    box-shadow: rgba(88, 102, 126, 0.08) 0 4px 24px, rgba(88, 102, 126, 0.12) 0 1px 2px;
-    padding: 10px;
+    .filter-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
 
-    span {
-      display: flex;
-      align-items: center;
+    .progress-container {
+      position: fixed;
+      pointer-events: none;
+      border-radius: 8px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 20px;
+      align-items: start;
+      justify-items: start;
 
-      h2, h4 {
-        margin: unset;
+      .hall-box {
+        background-color: #b6d3b5;
+        box-shadow: rgba(88, 102, 126, 0.08) 0 4px 24px, rgba(88, 102, 126, 0.12) 0 1px 2px;
+        padding: 10px;
+
+        span {
+          display: flex;
+          align-items: center;
+
+          h2, h4 {
+            margin: unset;
+          }
+        }
+
+        .mat-elevation-z8 {
+          background-color: #ddd2d2;
+        }
+      }
+
+      .progress-card {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+      }
+
+      .slot-machine-by-brand {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: start;
+        width: 100%;
+      }
+
+      .slot-machine-quantity {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        justify-self: start;
+        text-align: left;
+        font-size: 1.2rem;
+        padding: 5px;
+        box-shadow: rgba(88, 102, 126, 0.08) 0 4px 24px, rgba(88, 102, 126, 0.12) 0 1px 2px;
+
+        h3 {
+          margin: 0;
+
+          span {
+            font-weight: 400;
+            color: green;
+          }
+        }
       }
     }
 
-    .mat-elevation-z8 {
-      background-color: #ddd2d2;
-    }
   }
 
-  .progress-card {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: start;
-  }
-
-  .slot-machine-by-brand {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: start;
-    width: 100%;
-  }
-
-  .slot-machine-quantity {
-    grid-column: 1 / span 2;
-    grid-row: 2;
-    justify-self: start;
-    text-align: left;
-    font-size: 1.2rem;
-    padding: 5px;
-    box-shadow: rgba(88, 102, 126, 0.08) 0 4px 24px, rgba(88, 102, 126, 0.12) 0 1px 2px;
-
-    h3 {
-      margin: 0;
-
-      span {
-        font-weight: 400;
-        color: green;
-      }
-    }
-  }
 }
 
 

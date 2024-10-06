@@ -3,6 +3,10 @@ import {SlotService} from "../../core/services/slot.service";
 import {FullDatabaseResponse, Hall} from "../../core/interfaces/slot";
 import {SlotMachineService} from "../../core/services/slot-machine.service";
 import {NotificationService} from "../../core/services/notification.service";
+import {GameDayService} from "../../core/services/game-day.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmLogoutDialogComponent} from "../components/confirm-logout-dialog/confirm-logout-dialog.component";
 
 @Component({
   selector: 'app-slot',
@@ -10,8 +14,10 @@ import {NotificationService} from "../../core/services/notification.service";
   styleUrls: ['./slot.component.scss']
 })
 export class SlotComponent implements OnInit {
+  rankingForm: FormGroup;
   slotPitData: FullDatabaseResponse = {halls: [], game_days: [], total_daily_amount: 0};
   gameDate: string = '';
+  selectedDate: string = '';
   hallData: Hall[] = [];
   totalBvbMoney = 0
 
@@ -19,7 +25,14 @@ export class SlotComponent implements OnInit {
     private slotService: SlotService,
     private slotMachineService: SlotMachineService,
     private notificationService: NotificationService,
+    private gameDayService: GameDayService,
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {
+    this.rankingForm = this.fb.group({
+      start: [''],
+      end: ['']
+    });
   }
 
   ngOnInit() {
@@ -28,13 +41,16 @@ export class SlotComponent implements OnInit {
   }
 
 
-  getHallData(): void {
-    this.slotService.getHalls().subscribe((data: Hall[]) => {
-      this.hallData = data;
-      this.totalBvbMoney = this.hallData.reduce((acc, hall) => acc + hall.daily_money_sum, 0);
+  getHallData(startDate?: string, endDate?: string): void {
+    const params = startDate && endDate ? {start_date: startDate, end_date: endDate} : {};
 
+    this.slotService.getHalls(params).subscribe((data: Hall[]) => {
+      this.hallData = data;
+      console.log('hallData', this.hallData);
+      this.totalBvbMoney = this.hallData.reduce((acc, hall) => acc + hall.daily_money_sum, 0);
     });
   }
+
 
   getBrandList(slot_machines_by_brand: any): Array<any> {
     return Object.keys(slot_machines_by_brand).map(key => ({
@@ -73,6 +89,8 @@ export class SlotComponent implements OnInit {
     this.slotService.getGameDayData().subscribe((data: FullDatabaseResponse) => {
       this.slotPitData = data;
       this.gameDate = this.slotPitData.game_days[0].date;
+      console.log(this.slotPitData);
+      console.log('gameDate', this.gameDate);
     });
   }
 
@@ -80,6 +98,11 @@ export class SlotComponent implements OnInit {
     // Validate the bvbMoney input before proceeding
     if (!bvbMoney || isNaN(bvbMoney)) {
       this.notificationService.showError('Please enter the amount of BVB Money to close the slot machine.');
+      return;
+    }
+
+    if (bvbMoney < 0) {
+      this.notificationService.showError('Amount cannot be negative.');
       return;
     }
 
@@ -100,6 +123,43 @@ export class SlotComponent implements OnInit {
         }
       }
     );
+  }
+
+
+  closeGameDay(date: any): void {
+    console.log(date);
+    const dialogRef = this.dialog.open(ConfirmLogoutDialogComponent, {
+      data: {
+        contentText: 'Do you really want to Close the day?',
+        confirmButtonText: 'Yes, Close'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.gameDayService.closeGameDay(date).subscribe(
+          (response) => {
+            console.log(response);
+            this.notificationService.showSuccess(response.message);
+            this.getSlotsByHall()
+            this.getHallData();
+          },
+          (error) => {
+            this.notificationService.showError(error.error.message || "An error occurred");
+          }
+        );
+      }
+    });
+  }
+
+  submitDateRange(): void {
+    const startDate = this.rankingForm.get('start')?.value;
+    const endDate = this.rankingForm.get('end')?.value;
+
+    const formattedStartDate = startDate ? new Date(startDate).toISOString().split('T')[0] : undefined;
+    const formattedEndDate = endDate ? new Date(endDate).toISOString().split('T')[0] : undefined;
+
+    this.getHallData(formattedStartDate, formattedEndDate);
   }
 
 

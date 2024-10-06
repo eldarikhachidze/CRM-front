@@ -10,6 +10,15 @@
       overflow: auto;
       padding: 10px;
 
+      .table-header {
+        display: flex;
+        gap: 15px;
+
+        button {
+          background-color: rgba(87, 91, 87, 0.75);
+        }
+      }
+
       .slot-box {
         background-color: #b6d3b5;
         box-shadow: rgba(88, 102, 126, 0.08) 0 4px 24px, rgba(88, 102, 126, 0.12) 0 1px 2px;
@@ -18,4 +27,18 @@
       }
     }
   }
+}
+
+.ranking-date-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button {
+  align-self: start;
 }

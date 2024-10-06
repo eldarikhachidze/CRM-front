@@ -1,26 +1,29 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-confirm-logout-dialog',
   standalone: true,
   imports: [MatDialogModule, MatButtonModule],
   template: `
-<!--    <h1 mat-dialog-title class="dialog-h1">Confirm Logout</h1>-->
-    <div mat-dialog-content>Are you sure you want to log out?</div>
+    <div mat-dialog-content>
+      {{ data.contentText }}
+    </div>
     <div mat-dialog-actions>
       <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-button color="warn" (click)="onConfirm()">Log out</button>
+      <button mat-button color="warn" (click)="onConfirm()">{{ data.confirmButtonText }}</button>
     </div>
   `,
 })
 export class ConfirmLogoutDialogComponent {
 
   constructor(
-    private dialogRef: MatDialogRef<ConfirmLogoutDialogComponent>
-  ) { }
+    private dialogRef: MatDialogRef<ConfirmLogoutDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { contentText: string, confirmButtonText: string }
+  ) {
+  }
 
   onCancel(): void {
     this.dialogRef.close(false);
