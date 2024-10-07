@@ -5,10 +5,14 @@
         <h1>Game Date: {{ gameDate }}</h1>
         <button mat-raised-button (click)="closeGameDay(gameDate)">Close Day</button>
       </div>
+      <p><strong>Total Daily Amount for All Halls: </strong> {{ slotPitData.total_daily_amount }}₾</p>
+      <p><strong>Total Daily Amount for All Halls: </strong> {{ getTotalMoneyByDollar(slotPitData.total_daily_amount) }}
+        $</p>
       <div *ngFor="let hall of slotPitData.halls" class="slot-box">
         <!-- Hall Name -->
-        <h2>{{ hall.name }}</h2>
-
+        <h2>{{ hall.name }}₾</h2>
+        <!-- Daily Total for the Hall -->
+        <p><strong>Daily Money Sum:</strong> {{ hall.daily_money_sum }}</p>
         <!-- Slot Machines Table -->
         <table mat-table [dataSource]="hall.slot_machines" class="mat-elevation-z8">
 
@@ -56,13 +60,7 @@
           <tr mat-row *matRowDef="let row; columns: ['name', 'brand', 'dailyMoney', 'actions']"></tr>
         </table>
 
-        <!-- Daily Total for the Hall -->
-        <p><strong>Daily Money Sum:</strong> {{ hall.daily_money_sum }}</p>
-
       </div>
-
-      <!-- Total Daily Amount for All Halls -->
-      <p><strong>Total Daily Amount for All Halls:</strong> {{ slotPitData.total_daily_amount }}</p>
 
     </div>
 
@@ -70,21 +68,36 @@
     <div class="progress">
       <div class="progress-content">
         <div class="filter-section">
-          <mat-form-field>
+          <mat-form-field (click)="picker.open()" class="filter-input">
             <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input [formGroup]="rankingForm" [rangePicker]="picker">
-              <input matStartDate formControlName="start" placeholder="Start date">
-              <input matEndDate formControlName="end" placeholder="End date">
-            </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
 
+            <mat-date-range-input [formGroup]="rankingForm" [rangePicker]="picker">
+              <!-- Start Date Input -->
+              <input matStartDate formControlName="start" placeholder="Start date" readonly>
+
+              <!-- End Date Input -->
+              <input matEndDate formControlName="end" placeholder="End date" readonly>
+            </mat-date-range-input>
+
+            <!-- Hint for date format -->
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+
+            <!-- Date Picker Toggle -->
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+
+            <!-- Date Range Picker -->
+            <mat-date-range-picker #picker></mat-date-range-picker>
           </mat-form-field>
 
-          <button mat-raised-button color="primary" (click)="submitDateRange()">
-            Submit Date Range
-          </button>
+          <div class="actions">
+            <button mat-raised-button (click)="submitDateRange()">
+              Search
+            </button>
+            <button mat-raised-button (click)="resetDateRange()">
+              Reset Date
+            </button>
+
+          </div>
 
         </div>
         <!-- Progress Section -->
@@ -102,15 +115,17 @@
 
               <text x="50" y="35" font-size="8" text-anchor="middle" fill="green">Total money</text>
               <text x="50" y="40" font-size="5" text-anchor="middle" fill="black">{{totalBvbMoney}}₾</text>
-              <text x="50" y="48" font-size="8" text-anchor="middle" fill="black">{{ getTotalMoneyByDollar() }}$</text>
+              <text x="50" y="48" font-size="8" text-anchor="middle"
+                    fill="black">{{ getTotalMoneyByDollar(totalBvbMoney) }}$
+              </text>
 
             </svg>
           </div>
 
           <!-- Halls Display Section -->
           <div class="hall-box" *ngFor="let hall of hallData">
-            <span>HALL NAME: <h2>{{ hall.name }}</h2></span>
-            <span>TOTAL MONEY: <h4>{{ hall.daily_money_sum }}₾</h4></span>
+            <p><strong>HALL NAME: </strong>{{ hall.name }}</p>
+            <p><strong>TOTAL MONEY: </strong>{{ hall.daily_money_sum }}₾</p>
 
             <table mat-table [dataSource]="getBrandList(hall.slot_machines_by_brand)" class="mat-elevation-z8">
               <!-- Brand Column -->
@@ -138,6 +153,7 @@
               <tr mat-row *matRowDef="let row; columns: ['brand', 'quantity', 'totalMoney']"></tr>
             </table>
           </div>
+
         </div>
       </div>
     </div>

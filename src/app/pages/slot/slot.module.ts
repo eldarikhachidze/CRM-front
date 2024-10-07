@@ -11,6 +11,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatSelectModule} from "@angular/material/select";
 import {MatNativeDateModule} from "@angular/material/core";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {MatNativeDateModule} from "@angular/material/core";
     MatButtonModule,
     MatInputModule,
     MatNativeDateModule,
+    MatIconModule,
     MatProgressSpinnerModule,
     MatSortModule,
     MatDatepickerModule,

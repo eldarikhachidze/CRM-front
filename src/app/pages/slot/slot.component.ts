@@ -17,7 +17,6 @@ export class SlotComponent implements OnInit {
   rankingForm: FormGroup;
   slotPitData: FullDatabaseResponse = {halls: [], game_days: [], total_daily_amount: 0};
   gameDate: string = '';
-  selectedDate: string = '';
   hallData: Hall[] = [];
   totalBvbMoney = 0
 
@@ -43,16 +42,17 @@ export class SlotComponent implements OnInit {
 
   getHallData(startDate?: string, endDate?: string): void {
     const params = startDate && endDate ? {start_date: startDate, end_date: endDate} : {};
-
     this.slotService.getHalls(params).subscribe((data: Hall[]) => {
       this.hallData = data;
-      console.log('hallData', this.hallData);
       this.totalBvbMoney = this.hallData.reduce((acc, hall) => acc + hall.daily_money_sum, 0);
     });
   }
 
 
   getBrandList(slot_machines_by_brand: any): Array<any> {
+    if (!slot_machines_by_brand) {
+      return [];
+    }
     return Object.keys(slot_machines_by_brand).map(key => ({
       name: key,
       count: slot_machines_by_brand[key].count,
@@ -71,16 +71,16 @@ export class SlotComponent implements OnInit {
     return maxBvbMoney;
   }
 
-  getTotalMoneyByDollar(): number {
-    const res = this.totalBvbMoney / 2.70; // Declare the variable `res` using `const`
-    return parseFloat(res.toFixed(2)); // Use `parseFloat` to convert the fixed string to a number
+  getTotalMoneyByDollar(total: number): number {
+    const res = total / 2.70;
+    return parseFloat(res.toFixed(2));
   }
 
   calculateStrokeDashArray(): string {
     const totalBvbMoney = this.totalBvbMoney
     const maxBvbMoney = this.getMaxBvbMoney();
     const percentage = (totalBvbMoney / maxBvbMoney) * 100;
-    const strokeLength = 125.6;  // Approximate length of a half circle
+    const strokeLength = 125.6;
     const filledLength = (strokeLength * percentage) / 100;
     return `${filledLength} ${strokeLength - filledLength}`;
   }
@@ -95,7 +95,7 @@ export class SlotComponent implements OnInit {
   }
 
   close(id: number, bvbMoney: number): void {
-    // Validate the bvbMoney input before proceeding
+
     if (!bvbMoney || isNaN(bvbMoney)) {
       this.notificationService.showError('Please enter the amount of BVB Money to close the slot machine.');
       return;
@@ -106,7 +106,6 @@ export class SlotComponent implements OnInit {
       return;
     }
 
-    // Proceed with the service call to close the slot machine
     this.slotMachineService.closeSlotMachine(id, bvbMoney).subscribe(
       (res) => {
         if (res && res.message) {
@@ -152,15 +151,28 @@ export class SlotComponent implements OnInit {
     });
   }
 
+  formatDateToYYYYMMDD(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    const day = date.getDate().toString().padStart(2, '0'); // Get the day
+
+    return `${year}-${month}-${day}`;
+  }
+
   submitDateRange(): void {
     const startDate = this.rankingForm.get('start')?.value;
     const endDate = this.rankingForm.get('end')?.value;
 
-    const formattedStartDate = startDate ? new Date(startDate).toISOString().split('T')[0] : undefined;
-    const formattedEndDate = endDate ? new Date(endDate).toISOString().split('T')[0] : undefined;
+    const formattedStartDate = startDate ? this.formatDateToYYYYMMDD(new Date(startDate)) : undefined;
+    const formattedEndDate = endDate ? this.formatDateToYYYYMMDD(new Date(endDate)) : undefined;
 
     this.getHallData(formattedStartDate, formattedEndDate);
   }
 
+
+  resetDateRange(): void {
+    this.rankingForm.reset();
+    this.getHallData();
+  }
 
 }

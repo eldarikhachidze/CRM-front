@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
 html, body {
   height: 100%;
 }
@@ -41,16 +43,35 @@ body {
 
 .progress {
   .progress-content {
+    position: fixed;
     background-color: #ddd2d2;
 
     .filter-section {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      padding: 10px;
+      gap: 25px;
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+
+        button {
+          height: 100%;
+          width: 100%;
+          background-color: rgba(87, 91, 87, 0.75);
+        }
+      }
+
+      .filter-input {
+        padding: unset;
+        width: 100%;
+      }
     }
 
     .progress-container {
-      position: fixed;
-      pointer-events: none;
+
       border-radius: 8px;
       padding: 20px;
       display: grid;
