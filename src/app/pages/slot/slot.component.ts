@@ -15,10 +15,9 @@ import {ConfirmLogoutDialogComponent} from "../components/confirm-logout-dialog/
 })
 export class SlotComponent implements OnInit {
   rankingForm: FormGroup;
-  slotPitData: FullDatabaseResponse = {halls: [], game_days: [], total_daily_amount: 0};
+  slotPitData: FullDatabaseResponse = {halls: [], game_day: [], total_daily_amount: 0};
   gameDate: string = '';
   hallData: Hall[] = [];
-  totalBvbMoney = 0
 
   constructor(
     private slotService: SlotService,
@@ -42,12 +41,21 @@ export class SlotComponent implements OnInit {
 
   getHallData(startDate?: string, endDate?: string): void {
     const params = startDate && endDate ? {start_date: startDate, end_date: endDate} : {};
+
     this.slotService.getHalls(params).subscribe((data: Hall[]) => {
       this.hallData = data;
-      this.totalBvbMoney = this.hallData.reduce((acc, hall) => acc + hall.daily_money_sum, 0);
+      console.log(this.hallData);
     });
   }
 
+
+  getSlotsByHall(): void {
+    this.slotService.getGameDayData().subscribe((data: FullDatabaseResponse) => {
+      this.slotPitData = data;
+      this.gameDate = this.slotPitData.game_day[0].date;
+      console.log(this.slotPitData);
+    });
+  }
 
   getBrandList(slot_machines_by_brand: any): Array<any> {
     if (!slot_machines_by_brand) {
@@ -62,7 +70,7 @@ export class SlotComponent implements OnInit {
 
   getMaxBvbMoney(): number {
     let maxBvbMoney = 100;
-    const totalBvbMoney = this.totalBvbMoney
+    const totalBvbMoney = this.slotPitData.total_daily_amount;
 
     while (totalBvbMoney > maxBvbMoney) {
       maxBvbMoney *= 10;
@@ -77,21 +85,12 @@ export class SlotComponent implements OnInit {
   }
 
   calculateStrokeDashArray(): string {
-    const totalBvbMoney = this.totalBvbMoney
+    const totalBvbMoney = this.slotPitData.total_daily_amount;
     const maxBvbMoney = this.getMaxBvbMoney();
     const percentage = (totalBvbMoney / maxBvbMoney) * 100;
     const strokeLength = 125.6;
     const filledLength = (strokeLength * percentage) / 100;
     return `${filledLength} ${strokeLength - filledLength}`;
-  }
-
-  getSlotsByHall(): void {
-    this.slotService.getGameDayData().subscribe((data: FullDatabaseResponse) => {
-      this.slotPitData = data;
-      this.gameDate = this.slotPitData.game_days[0].date;
-      console.log(this.slotPitData);
-      console.log('gameDate', this.gameDate);
-    });
   }
 
   close(id: number, bvbMoney: number): void {
