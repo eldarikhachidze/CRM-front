@@ -18,6 +18,7 @@ export class SlotComponent implements OnInit {
   slotPitData: FullDatabaseResponse = {halls: [], game_day: [], total_daily_amount: 0};
   gameDate: string = '';
   hallData: Hall[] = [];
+  totalBvbMoney: number = 0;
 
   constructor(
     private slotService: SlotService,
@@ -44,7 +45,7 @@ export class SlotComponent implements OnInit {
 
     this.slotService.getHalls(params).subscribe((data: Hall[]) => {
       this.hallData = data;
-      console.log(this.hallData);
+      this.totalBvbMoney = this.hallData.reduce((acc, hall) => acc + hall.daily_money_sum, 0);
     });
   }
 
@@ -53,7 +54,6 @@ export class SlotComponent implements OnInit {
     this.slotService.getGameDayData().subscribe((data: FullDatabaseResponse) => {
       this.slotPitData = data;
       this.gameDate = this.slotPitData.game_day[0].date;
-      console.log(this.slotPitData);
     });
   }
 
@@ -70,7 +70,7 @@ export class SlotComponent implements OnInit {
 
   getMaxBvbMoney(): number {
     let maxBvbMoney = 100;
-    const totalBvbMoney = this.slotPitData.total_daily_amount;
+    const totalBvbMoney = this.totalBvbMoney;
 
     while (totalBvbMoney > maxBvbMoney) {
       maxBvbMoney *= 10;
@@ -85,7 +85,7 @@ export class SlotComponent implements OnInit {
   }
 
   calculateStrokeDashArray(): string {
-    const totalBvbMoney = this.slotPitData.total_daily_amount;
+    const totalBvbMoney = this.totalBvbMoney;
     const maxBvbMoney = this.getMaxBvbMoney();
     const percentage = (totalBvbMoney / maxBvbMoney) * 100;
     const strokeLength = 125.6;
