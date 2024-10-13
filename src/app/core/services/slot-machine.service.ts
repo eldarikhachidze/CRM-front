@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BaseService} from "./base.service";
 import {catchError, Observable, throwError} from "rxjs";
-import {SlotMachine} from "../interfaces/slot-machine";
-import {Hall} from "../interfaces/slot";
 
 @Injectable({
   providedIn: 'root'

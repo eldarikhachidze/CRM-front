@@ -10,9 +10,9 @@
         $</p>
       <div *ngFor="let hall of slotPitData.halls" class="slot-box">
         <!-- Hall Name -->
-        <h2>{{ hall.name }}₾</h2>
+        <h2>{{ hall.name }}</h2>
         <!-- Daily Total for the Hall -->
-        <p><strong>Daily Money Sum:</strong> {{ hall.daily_money_sum }}</p>
+        <p><strong>Daily Money Sum: </strong> {{ hall.daily_money_sum }}₾</p>
         <!-- Slot Machines Table -->
         <table mat-table [dataSource]="hall.slot_machines" class="mat-elevation-z8">
 
@@ -36,7 +36,8 @@
                 <mat-form-field class="example-full-width">
                   <mat-label>Daily Amount</mat-label>
                   <!-- Two-way binding to capture daily amounts (amount.amount) -->
-                  <input matInput [(ngModel)]="amount.amount" min="0" placeholder="Enter amount">
+                  <input matInput [(ngModel)]="amount.amount" (focusout)="close(slotMachine.id, amount.amount)" min="0"
+                         placeholder="Enter amount">
                 </mat-form-field>
               </div>
             </td>
@@ -54,10 +55,10 @@
           </ng-container>
 
           <!-- Table Header -->
-          <tr mat-header-row *matHeaderRowDef="['name', 'brand', 'dailyMoney', 'actions']"></tr>
+          <tr mat-header-row *matHeaderRowDef="['name', 'brand', 'dailyMoney']"></tr>
 
           <!-- Table Rows -->
-          <tr mat-row *matRowDef="let row; columns: ['name', 'brand', 'dailyMoney', 'actions']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name', 'brand', 'dailyMoney']"></tr>
         </table>
 
       </div>
@@ -114,9 +115,10 @@
               <text x="100" y="10" font-size="8" text-anchor="end" fill="green">{{ getMaxBvbMoney() }}</text>
 
               <text x="50" y="35" font-size="8" text-anchor="middle" fill="green">Total money</text>
-              <text x="50" y="40" font-size="5" text-anchor="middle" fill="black">{{totalBvbMoney}}₾</text>
+              <text x="50" y="40" font-size="5" text-anchor="middle" fill="black">{{slotPitData.total_daily_amount}}₾
+              </text>
               <text x="50" y="48" font-size="8" text-anchor="middle"
-                    fill="black">{{ getTotalMoneyByDollar(totalBvbMoney) }}$
+                    fill="black">{{ getTotalMoneyByDollar(slotPitData.total_daily_amount) }}$
               </text>
 
             </svg>
