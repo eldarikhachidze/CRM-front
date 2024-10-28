@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SlotService} from "../../core/services/slot.service";
-import {FullDatabaseResponse, Hall} from "../../core/interfaces/slot";
+import {FullDatabaseResponse, SlotHall} from "../../core/interfaces/slot";
 import {SlotMachineService} from "../../core/services/slot-machine.service";
 import {NotificationService} from "../../core/services/notification.service";
 import {GameDayService} from "../../core/services/game-day.service";
@@ -17,7 +17,7 @@ export class SlotComponent implements OnInit {
   rankingForm: FormGroup;
   slotPitData: FullDatabaseResponse = {halls: [], game_day: [], total_daily_amount: 0};
   gameDate: string = '';
-  hallData: Hall[] = [];
+  hallData: SlotHall[] = [];
 
   constructor(
     private slotService: SlotService,
@@ -42,7 +42,7 @@ export class SlotComponent implements OnInit {
   getHallData(startDate?: string, endDate?: string): void {
     const params = startDate && endDate ? {start_date: startDate, end_date: endDate} : {};
 
-    this.slotService.getHalls(params).subscribe((data: Hall[]) => {
+    this.slotService.getHalls(params).subscribe((data: SlotHall[]) => {
       this.hallData = data;
       console.log(this.hallData);
     });

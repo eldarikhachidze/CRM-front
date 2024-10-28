@@ -31,6 +31,10 @@ const routes: Routes = [
       {
         path: 'slot',
         loadChildren: () => import('./pages/slot/slot.module').then(m => m.SlotModule),
+      },
+      {
+        path: 'table',
+        loadChildren: () => import('./pages/table/table.module').then(m => m.TableModule),
       }
     ],
   },

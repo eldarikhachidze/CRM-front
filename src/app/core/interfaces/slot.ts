@@ -35,7 +35,7 @@ export interface Slotmachinesbybrand {
   brand: Group;
 }
 
-export interface Hall {
+export interface SlotHall {
   id: number;
   slot_machines: SlotMachine[];
   daily_money_sum: number;
@@ -47,7 +47,7 @@ export interface Hall {
 }
 
 export interface FullDatabaseResponse {
-  halls: Hall[];
+  halls: SlotHall[];
   game_day: any[];
   total_daily_amount: number;
 }

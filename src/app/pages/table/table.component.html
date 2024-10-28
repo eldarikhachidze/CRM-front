@@ -1,0 +1,71 @@
+<div class="list">
+  <div class="grid-container">
+    <div class="table-container">
+      <div class="table-header">
+        <div class="table-header">
+          <h1>Game Date: {{ gameDay }}</h1>
+          <button mat-raised-button (click)="createNewGameDay(gameDay)">Close Day</button>
+        </div>
+      </div>
+      <div class="hall-box" *ngFor="let hall of hallData">
+        <h2>{{ hall.name }}</h2>
+        <div class="table-box-container">
+          <div class="table" *ngFor="let item of hall.tables">
+            <mat-card class="example-card" appearance="outlined">
+              <mat-card-header>
+                <mat-card-title>{{ item.name }}</mat-card-title>
+                <mat-card-subtitle>status</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="chips-card">
+                  <table>
+                    <thead>
+                    <tr>
+                      <th>Chips</th>
+                      <th>Quantity</th>
+                      <th>CloseQNT</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let chip of item.open_flot | keyvalue : sortKeys">
+                      <td>{{ chip.key }}</td> <!-- Denomination -->
+                      <td class="center">{{ chip.value }}</td> <!-- Quantity -->
+                      <td>
+                        <input
+                          class="close-input"
+                          placeholder="QNTT"
+                          type="number"
+                          [(ngModel)]="closeFlotQuantities[item.id][chip.key]"
+                          [value]="item.latest_close_floot.close_flot[chip.key] || 0"
+                        />
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <div class="result_section">
+                    <h4>Total</h4>
+                    <h2>{{ item.open_flot_total }}</h2>
+                  </div>
+                  <div class="result_section">
+                    <h4>Result</h4>
+                    <h2>{{ item.latest_close_floot?.result || 0 }}</h2> <!-- Use safe navigation and fallback -->
+                  </div>
+                </div>
+              </mat-card-content>
+              <mat-card-footer class="example-card-footer">
+                <mat-chip-set aria-label="Actions">
+                  <mat-chip>
+                    <button mat-button color="primary">Edit Table</button>
+                  </mat-chip>
+                  <mat-chip>
+                    <button mat-button color="warn" (click)="closeTable(item.id)">Close Table</button>
+                  </mat-chip>
+                </mat-chip-set>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

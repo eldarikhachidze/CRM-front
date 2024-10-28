@@ -1,4 +1,4 @@
-<div class="slot-machine-list">
+<div class="list">
   <div class="grid-container">
     <div class="table-container">
       <div class="table-header">
@@ -8,7 +8,7 @@
       <p><strong>Total Daily Amount for All Halls: </strong> {{ slotPitData.total_daily_amount }}₾</p>
       <p><strong>Total Daily Amount for All Halls: </strong> {{ getTotalMoneyByDollar(slotPitData.total_daily_amount) }}
         $</p>
-      <div *ngFor="let hall of slotPitData.halls" class="slot-box">
+      <div *ngFor="let hall of slotPitData.halls" class="hall-box">
         <!-- Hall Name -->
         <h2>{{ hall.name }}</h2>
         <!-- Daily Total for the Hall -->

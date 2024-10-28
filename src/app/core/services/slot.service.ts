@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BaseService} from "./base.service";
 import {Observable} from "rxjs";
-import {FullDatabaseResponse, GameDay, Hall} from "../interfaces/slot";
+import {FullDatabaseResponse, GameDay, SlotHall} from "../interfaces/slot";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class SlotService extends BaseService {
     return this.post('slot/game_days', data);
   }
 
-  getHalls(params: {}): Observable<Hall[]> {
-    return this.get<Hall[]>('slot/halls/', params);
+  getHalls(params: {}): Observable<SlotHall[]> {
+    return this.get<SlotHall[]>('slot/halls/', params);
   }
 
   getGameDayData(): Observable<FullDatabaseResponse> {
