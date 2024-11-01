@@ -2,13 +2,22 @@ export interface OpenFlot {
   [denomination: string]: number; // This allows string keys for denominations
   quantity: number;
 }
-interface Latestclosefloot {
+
+export interface Latestclosefloot {
+  id: number;
   close_flot: OpenFlot;
   close_flot_total: number;
   result: number;
   close_date?: any;
+  status: string;
+  plaques: OpenFlot;
+  fill_credit: number;
+  created_at: string;
+  updated_at?: any;
+  deleted_at?: any;
 }
-interface Table {
+
+export interface Table {
   id: number;
   hall: string;
   latest_close_floot: Latestclosefloot;
@@ -20,6 +29,7 @@ interface Table {
   date_deleted?: any;
   open_flot: OpenFlot;
 }
+
 export interface TableHall {
   id: number;
   name: string;
@@ -28,6 +38,7 @@ export interface TableHall {
   deleted_at?: any;
   tables: Table[];
 }
+
 // src/app/pages/table/close-flot-data.model.ts
 export interface CloseFlotData {
   table_id: number;

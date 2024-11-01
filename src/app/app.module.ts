@@ -14,12 +14,15 @@ import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ConfirmLogoutDialogComponent} from "./pages/components/confirm-logout-dialog/confirm-logout-dialog.component";
 import {TransactionModule} from "./pages/transaction/transaction.module";
-import { TableComponent } from './pages/table/table.component';
+import {TableComponent} from './pages/table/table.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +49,8 @@ import {FormsModule} from "@angular/forms";
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    MatMenuModule,
+    MatIconModule,
   ],
   providers: [
     {

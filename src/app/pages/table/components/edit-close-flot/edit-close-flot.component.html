@@ -1,0 +1,56 @@
+<div *ngIf="tableData">
+  <form [formGroup]="form" (ngSubmit)="updateCloseFlot()">
+    <div class="chips-card">
+      <table>
+        <thead>
+        <tr>
+          <th>Chips</th>
+          <th>CloseQNT</th>
+          <th>PLQ</th>
+          <th>Tip</th>
+        </tr>
+        </thead>
+        <tbody formArrayName="closeFlotQuantities">
+        <tr *ngFor="let chip of tableData.close_flot | keyvalue : sortKeys; let i = index">
+          <td>{{ chip.key }}</td> <!-- Denomination -->
+          <td>
+            <input
+              class="close-input"
+              placeholder="QNTT"
+              type="number"
+              [formControlName]="i"
+            />
+          </td>
+          <td>
+            <input
+              class="close-input"
+              placeholder="QNTT"
+              type="number"
+              [value]="0"
+            />
+          </td>
+          <td>
+            <input
+              class="close-input"
+              placeholder="QNTT"
+              type="number"
+              [value]="0"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{{ tableData.close_flot_total || 0 }}</td> <!-- Use safe navigation -->
+          <td>10000</td>
+          <td>100</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="result_section">
+        <h4>Result</h4>
+        <h2>{{ tableData.result || 0 }}</h2> <!-- Use safe navigation and fallback -->
+      </div>
+    </div>
+    <button mat-raised-button color="primary" type="submit">Save Table</button>
+  </form>
+</div>

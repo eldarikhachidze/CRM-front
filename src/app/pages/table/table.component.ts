@@ -38,12 +38,20 @@ export class TableComponent implements OnInit {
         hall.tables.forEach(table => {
           this.closeFlotQuantities[table.id] = {};
 
-          // Ensure latest_close_floot is initialized
+          // Ensure latest_close_floot is initialized with all required fields
           if (!table.latest_close_floot) {
             table.latest_close_floot = {
-              close_flot: { quantity: 0 }, // Include any other required properties from OpenFlot
-              close_flot_total: 0,         // Required property
-              result: 0
+              id: 0,
+              close_flot: {quantity: 0},
+              close_flot_total: 0,
+              result: 0,
+              close_date: null,
+              status: "open",
+              plaques: {quantity: 0},
+              fill_credit: 0,
+              created_at: new Date().toISOString(),
+              updated_at: null,
+              deleted_at: null
             };
           }
 
@@ -58,13 +66,10 @@ export class TableComponent implements OnInit {
   }
 
 
-
-
   getGameDay() {
     this.tableService.gameDayList().subscribe((data) => {
       this.gameDay = data.date;
       this.gameDayId = data.id;
-      console.log(data.date);
     });
   }
 
@@ -92,11 +97,10 @@ export class TableComponent implements OnInit {
       if (result) {
         this.tableService.createGameDay(newGameDay).subscribe(
           (res) => {
-            console.log(res);
             if (res && res) {
               this.notificationService.showSuccess(res.message);
-              this.getTables();  // Refresh the tables if needed
-              this.getGameDay(); // Refresh the game day list if needed
+              this.getTables();
+              this.getGameDay();
             }
           },
           (error) => {
@@ -113,24 +117,28 @@ export class TableComponent implements OnInit {
   };
 
   closeTable(tableId: number): void {
-
-    console.log(tableId)
     const closeData: CloseFlotData = {
       table_id: tableId,  // Make sure to use 'table_id'
       game_day: this.gameDayId,
       close_flot: this.closeFlotQuantities[tableId]
     };
-    console.log("Closing table with data:", closeData);
+
     this.tableService.closeTable(closeData).subscribe({
       next: (response) => {
-        console.log("Table closed successfully:", response);
         this.notificationService.showSuccess(response.message);
         this.getTables(); // Refresh the tables if needed
       },
       error: (error) => {
-        console.error("Error closing table:", error);
-        this.notificationService.showError(error.error.message || "An error occurred");
+        console.log('Error response:', error); // Log the entire error response for debugging
+
+        console.log('Error message:', error.error.error); // Log the error message for debugging
+        this.notificationService.showError(error.error.error);
       }
     });
+  }
+
+  editTable(id: number) {
+    console.log('Edit table:', id);
+
   }
 }
