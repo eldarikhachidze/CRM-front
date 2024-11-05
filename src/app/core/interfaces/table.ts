@@ -3,6 +3,18 @@ export interface OpenFlot {
   quantity: number;
 }
 
+export interface Plaque {
+  id: number;
+  plaques: OpenFlot;
+  plaques_total: number;
+  result: number;
+  status: string;
+  created_at: string;
+  updated_at?: any;
+  deleted_at?: any;
+
+}
+
 export interface Latestclosefloot {
   id: number;
   close_flot: OpenFlot;
@@ -10,7 +22,6 @@ export interface Latestclosefloot {
   result: number;
   close_date?: any;
   status: string;
-  plaques: OpenFlot;
   fill_credit: number;
   created_at: string;
   updated_at?: any;
@@ -20,6 +31,7 @@ export interface Latestclosefloot {
 export interface Table {
   id: number;
   hall: string;
+  latest_plaque: Plaque;
   latest_close_floot: Latestclosefloot;
   name: string;
   open_flot_total: number;
@@ -52,4 +64,12 @@ export interface GameDay {
   created_at: string;
   updated_at?: any;
   deleted_at?: any;
+}
+
+export interface Chip {
+  id: string;
+  denomination: string;
+  date_created: string;
+  date_edited?: any;
+  date_deleted?: any;
 }

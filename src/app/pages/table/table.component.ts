@@ -14,6 +14,7 @@ import {NotificationService} from "../../core/services/notification.service";
 export class TableComponent implements OnInit {
   hallData: TableHall[] = [];
   closeFlotQuantities: { [tableId: number]: { [denomination: string]: number } } = {};
+  closePlaqueQuantities: { [tableId: number]: { [denomination: string]: number } } = {};
   gameDay: string = '';
   gameDayId: number = 0;
 
@@ -37,6 +38,7 @@ export class TableComponent implements OnInit {
       this.hallData.forEach(hall => {
         hall.tables.forEach(table => {
           this.closeFlotQuantities[table.id] = {};
+          this.closePlaqueQuantities[table.id] = {};
 
           // Ensure latest_close_floot is initialized with all required fields
           if (!table.latest_close_floot) {
@@ -47,8 +49,20 @@ export class TableComponent implements OnInit {
               result: 0,
               close_date: null,
               status: "open",
-              plaques: {quantity: 0},
               fill_credit: 0,
+              created_at: new Date().toISOString(),
+              updated_at: null,
+              deleted_at: null
+            };
+          }
+
+          if (!table.latest_plaque) {
+            table.latest_plaque = {
+              id: 0,
+              plaques: {quantity: 0},
+              plaques_total: 0,
+              result: 0,
+              status: "open",
               created_at: new Date().toISOString(),
               updated_at: null,
               deleted_at: null
@@ -116,11 +130,11 @@ export class TableComponent implements OnInit {
     return parseFloat(a.key) - parseFloat(b.key);
   };
 
-  closeTable(tableId: number): void {
+  closeTable(id: number): void {
     const closeData: CloseFlotData = {
-      table_id: tableId,  // Make sure to use 'table_id'
+      table_id: id,
       game_day: this.gameDayId,
-      close_flot: this.closeFlotQuantities[tableId]
+      close_flot: this.closeFlotQuantities[id]
     };
 
     this.tableService.closeTable(closeData).subscribe({
@@ -141,4 +155,28 @@ export class TableComponent implements OnInit {
     console.log('Edit table:', id);
 
   }
+
+  closePlaque(id: number) {
+    const plaqueData = {
+      table_id: id,
+      game_day: this.gameDayId,
+      plaques: this.closePlaqueQuantities[id],
+    };
+
+    console.log('Close plaque:', plaqueData);
+
+    this.tableService.closePlaque(plaqueData).subscribe({
+      next: (response) => {
+        this.notificationService.showSuccess(response.message);
+        this.getTables(); // Refresh the tables if needed
+      },
+      error: (error) => {
+        console.log('Error response:', error); // Log the entire error response for debugging
+
+        console.log('Error message:', error.error.error); // Log the error message for debugging
+        this.notificationService.showError(error.error.error);
+      }
+    });
+  }
+
 }

@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {TableService} from "../../../../core/services/table.service";
-import {ActivatedRoute} from "@angular/router";
-import {Latestclosefloot} from "../../../../core/interfaces/table";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Chip, Latestclosefloot, Table} from "../../../../core/interfaces/table";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {of, switchMap} from "rxjs";
-import {KeyValue} from "@angular/common";
+import {NotificationService} from "../../../../core/services/notification.service";
+import {ChipService} from "../../../../core/services/chip.service";
 
 @Component({
   selector: 'app-edit-close-flot',
@@ -12,66 +13,97 @@ import {KeyValue} from "@angular/common";
   styleUrls: ['./edit-close-flot.component.scss']
 })
 export class EditCloseFlotComponent implements OnInit {
+  data: any;
   form: FormGroup;
-  tableData?: Latestclosefloot
+  chipData: Chip[] = [];
+  denominations: number[] = [1, 2.5, 5, 25, 100, 500, 1000, 5000, 10000];
 
   constructor(
-    private tableService: TableService,
-    private route: ActivatedRoute,
     private fb: FormBuilder,
+    private tableService: TableService,
+    private notificationService: NotificationService,
+    private chipService: ChipService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
+    // Initialize form with an empty array for open_flot
     this.form = this.fb.group({
-      id: [null],
-      closeFlotQuantities: this.fb.array([]), // Initialize with empty array
+      id: <number | null>(null),
+      name: [{value: '', disabled: true}],
+      open_flot: this.fb.array([]), // Empty array initialization
+      latest_close_floot: [{}],
+      plaques: [{}],
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.getChips(); // Assuming this is where you fetch the chips data
+
     this.route.params.pipe(
       switchMap(params => {
-        const id = params['id'];
-        if (id) {
-          console.log(`Fetching table ID: ${id}`);
-          return this.tableService.getTable(id);
+        if (params['id']) {
+          return this.tableService.getTable(params['id']);
         }
         return of(null);
       })
     ).subscribe(res => {
       if (res) {
-        console.log('Received response:', res);
-        this.tableData = res;
+        this.data = res;
+        this.form.patchValue({
+          id: res.id,
+          name: res.name,
+          latest_close_floot: res.latest_close_floot || {},
+          plaques: res.plaques || {},
+        });
 
-        // Populate your form array with the close_flot data
-        this.populateCloseFlotFormArray();
-
-        // Optionally patch other form values
-        this.form.patchValue({id: res.id});
+        this.initOpenFlotArray();
       }
     });
   }
 
-  populateCloseFlotFormArray() {
-    const closeFlotArray = this.form.get('closeFlotQuantities') as FormArray;
-    closeFlotArray.clear(); // Clear existing controls
-
-    if (this.tableData && this.tableData.close_flot) {
-      Object.keys(this.tableData.close_flot).forEach(key => {
-        const value = this.tableData?.close_flot[key] || 0; // Handle undefined values
-        closeFlotArray.push(this.fb.control(value)); // Push value into FormArray
-      });
-    }
+  get openFlot(): FormArray {
+    return this.form.get('open_flot') as FormArray;
   }
 
-
-  get closeFlotQuantities(): FormArray {
-    return this.form.get('closeFlotQuantities') as FormArray;
+  getChips(): void {
+    this.chipService.getChips().subscribe(data => {
+      this.chipData = data;
+    });
   }
 
-  sortKeys = (a: KeyValue<string, number>, b: KeyValue<string, number>): number => {
-    return parseFloat(a.key) - parseFloat(b.key);
-  };
+  // Now called after data is set
+  initOpenFlotArray(): void {
+    const openFlotArray = this.form.get('open_flot') as FormArray;
+    openFlotArray.clear(); // Clear existing controls to avoid duplicates
 
-  updateCloseFlot() {
-    // Logic to save the updated values
+    // Populate open_flot array based on this.data
+    this.denominations.forEach(denomination => {
+      const quantity = this.data.open_flot?.[denomination] || 0;
+      openFlotArray.push(this.fb.group({
+        denomination: [{value: denomination, disabled: true}],
+        quantity: [quantity, Validators.required]
+      }));
+    });
+  }
+
+  getCloseQuantity(denomination: number): number {
+    return this.form.value.latest_close_floot?.close_flot[denomination] || 0;
+  }
+
+  getPlaqueQuantity(denomination: number): number {
+    return this.form.value.plaques?.[denomination] || 0;
+  }
+
+  submit(): void {
+    if (this.form.invalid) return;
+
+    const closingFleetData = this.openFlot.controls.reduce((acc, control) => {
+      const denomination = control.get('denomination')?.value;
+      const quantity = this.getCloseQuantity(denomination); // Or use control.get('quantity')?.value if stored directly in the form
+      acc[denomination] = quantity;
+      return acc;
+    }, {} as { [key: number]: number });
+
+    console.log(closingFleetData);
   }
 }

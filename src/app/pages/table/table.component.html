@@ -64,7 +64,8 @@
                           class="close-input"
                           placeholder="QNTT"
                           type="number"
-                          value="0"
+                          [(ngModel)]="closePlaqueQuantities[item.id][chip.key]"
+                          [value]="item.latest_plaque.plaques[chip.key] || 0"
                         />
                       </td>
                       <td>
@@ -80,7 +81,7 @@
                       <td>Total</td>
                       <td>{{ item.open_flot_total }}</td>
                       <td>{{ item.latest_close_floot.close_flot_total || 0 }}</td>
-                      <td>10000</td>
+                      <td>{{ item.latest_plaque.plaques_total || 0 }}</td>
                       <td>100</td>
                     </tr>
                     </tbody>
@@ -98,6 +99,9 @@
                   </mat-chip>
                   <mat-chip>
                     <button mat-button color="warn" (click)="closeTable(item.id)">Close</button>
+                  </mat-chip>
+                  <mat-chip>
+                    <button mat-button color="warn" (click)="closePlaque(item.id)">Count</button>
                   </mat-chip>
                 </mat-chip-set>
               </mat-card-footer>

@@ -12,16 +12,19 @@ export class TableService extends BaseService {
     return this.get<TableHall[]>('table/hall/')
   }
 
+  getTable(id: number): Observable<any> {
+    return this.get<any>(`table/delete/${id}/`)
+  }
+
   closeTable(data: any): Observable<any> {
     return this.post<any>('table/close-table/', data)
   }
-
-  getTable(id: number): Observable<any> {
-    return this.get<any>(`table/close-table/${id}/`)
-  }
-
   updateCloseTable(id: number, data: any): Observable<any> {
     return this.put<any>(`table/close-table/${id}/`, data)
+  }
+
+  closePlaque(data: any): Observable<any> {
+    return this.post<any>('table/plaque/', data)
   }
 
   createGameDay(date: string): Observable<any> {
