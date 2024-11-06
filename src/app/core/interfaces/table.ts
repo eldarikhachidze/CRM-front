@@ -31,6 +31,7 @@ export interface Latestclosefloot {
 export interface Table {
   id: number;
   hall: string;
+  last_result: number;
   latest_plaque: Plaque;
   latest_close_floot: Latestclosefloot;
   name: string;

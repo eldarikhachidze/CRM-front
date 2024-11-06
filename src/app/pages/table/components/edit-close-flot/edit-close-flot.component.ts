@@ -16,7 +16,7 @@ export class EditCloseFlotComponent implements OnInit {
   data: any;
   form: FormGroup;
   chipData: Chip[] = [];
-  denominations: number[] = [1, 2.5, 5, 25, 100, 500, 1000, 5000, 10000];
+  denominations: number[] = [0.5, 1, 2.5, 5, 25, 100, 500, 1000, 5000, 10000];
 
   constructor(
     private fb: FormBuilder,
@@ -94,16 +94,26 @@ export class EditCloseFlotComponent implements OnInit {
     return this.form.value.plaques?.[denomination] || 0;
   }
 
-  submit(): void {
+  updateCloseFloot(): void {
     if (this.form.invalid) return;
 
     const closingFleetData = this.openFlot.controls.reduce((acc, control) => {
       const denomination = control.get('denomination')?.value;
-      const quantity = this.getCloseQuantity(denomination); // Or use control.get('quantity')?.value if stored directly in the form
-      acc[denomination] = quantity;
+      const quantity = control.get('quantity')?.value; // Get the latest value from the quantity field
+      acc[denomination] = quantity; // Store it in the closingFleetData object
       return acc;
     }, {} as { [key: number]: number });
 
-    console.log(closingFleetData);
+    console.log('Closing fleet data', closingFleetData);
+
+    this.tableService.updateCloseTable(this.form.value.id, { close_flot: closingFleetData })
+      .subscribe((res) => {
+        if (res) {
+          console.log('Close flot updated successfully', res);
+          this.notificationService.showSuccess(res.message);
+          this.router.navigate(['/table']);
+        }
+      });
   }
+
 }

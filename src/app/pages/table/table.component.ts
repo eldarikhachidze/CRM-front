@@ -40,7 +40,6 @@ export class TableComponent implements OnInit {
           this.closeFlotQuantities[table.id] = {};
           this.closePlaqueQuantities[table.id] = {};
 
-          // Ensure latest_close_floot is initialized with all required fields
           if (!table.latest_close_floot) {
             table.latest_close_floot = {
               id: 0,
@@ -71,6 +70,7 @@ export class TableComponent implements OnInit {
 
           Object.keys(table.open_flot).forEach(key => {
             this.closeFlotQuantities[table.id][key] = table.latest_close_floot.close_flot[key] || 0;
+            this.closePlaqueQuantities[table.id][key] = table.latest_plaque.plaques[key] || 0;
           });
         });
       });
@@ -111,7 +111,7 @@ export class TableComponent implements OnInit {
       if (result) {
         this.tableService.createGameDay(newGameDay).subscribe(
           (res) => {
-            if (res && res) {
+            if (res && res.message) {
               this.notificationService.showSuccess(res.message);
               this.getTables();
               this.getGameDay();

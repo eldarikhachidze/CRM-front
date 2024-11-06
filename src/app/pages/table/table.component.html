@@ -56,7 +56,7 @@
                           placeholder="QNTT"
                           type="number"
                           [(ngModel)]="closeFlotQuantities[item.id][chip.key]"
-                          [value]="item.latest_close_floot.close_flot[chip.key] || 0"
+                          [value]="item.latest_close_floot.close_flot[chip.key]"
                         />
                       </td>
                       <td>
@@ -65,7 +65,7 @@
                           placeholder="QNTT"
                           type="number"
                           [(ngModel)]="closePlaqueQuantities[item.id][chip.key]"
-                          [value]="item.latest_plaque.plaques[chip.key] || 0"
+                          [value]="item.latest_plaque.plaques[chip.key]"
                         />
                       </td>
                       <td>
@@ -80,15 +80,15 @@
                     <tr>
                       <td>Total</td>
                       <td>{{ item.open_flot_total }}</td>
-                      <td>{{ item.latest_close_floot.close_flot_total || 0 }}</td>
-                      <td>{{ item.latest_plaque.plaques_total || 0 }}</td>
+                      <td>{{ item.latest_close_floot.close_flot_total }}</td>
+                      <td>{{ item.latest_plaque.plaques_total }}</td>
                       <td>100</td>
                     </tr>
                     </tbody>
                   </table>
                   <div class="result_section">
                     <h4>Result</h4>
-                    <h2>{{ item.latest_close_floot.result || 0 }}</h2> <!-- Use safe navigation and fallback -->
+                    <h2>{{ item.last_result }}</h2> <!-- Use safe navigation and fallback -->
                   </div>
                 </div>
               </mat-card-content>
