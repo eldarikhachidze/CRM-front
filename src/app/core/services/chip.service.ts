@@ -12,6 +12,6 @@ export class ChipService extends BaseService{
     return this.get<Chip[]>('chip/');
   }
   getALlChip(): Observable<any> {
-    return this.get<any>('chip');
+    return this.get<any>('chip/');
   }
 }

@@ -30,9 +30,11 @@
                   <div class="status-section">
                     <mat-card-subtitle>{{ item.latest_close_floot.status ? 'Open' : 'Closed' }}</mat-card-subtitle>
                     <mat-card-subtitle>{{ item.latest_close_floot.close_date | date: 'HH:mm' }}</mat-card-subtitle>
+                    <mat-card-subtitle *ngIf="item.latest_close_floot.updated_at">
+                      Edited: {{ item.latest_close_floot.updated_at | date: 'HH:mm' }}
+                    </mat-card-subtitle>
                   </div>
                 </mat-card-subtitle>
-                <mat-card-subtitle>{{ item.latest_close_floot.updated_at }}</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content>
                 <div class="chips-card">

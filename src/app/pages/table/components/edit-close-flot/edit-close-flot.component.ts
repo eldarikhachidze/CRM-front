@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TableService} from "../../../../core/services/table.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Chip, Latestclosefloot, Table} from "../../../../core/interfaces/table";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {of, switchMap} from "rxjs";
 import {NotificationService} from "../../../../core/services/notification.service";
-import {ChipService} from "../../../../core/services/chip.service";
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-edit-close-flot',
@@ -13,107 +11,79 @@ import {ChipService} from "../../../../core/services/chip.service";
   styleUrls: ['./edit-close-flot.component.scss']
 })
 export class EditCloseFlotComponent implements OnInit {
-  data: any;
   form: FormGroup;
-  chipData: Chip[] = [];
-  denominations: number[] = [0.5, 1, 2.5, 5, 25, 100, 500, 1000, 5000, 10000];
+  tableData: any;
+  tableId!: number;
 
   constructor(
     private fb: FormBuilder,
     private tableService: TableService,
-    private notificationService: NotificationService,
-    private chipService: ChipService,
+    private notifyService: NotificationService,
+    private route: ActivatedRoute,
     private router: Router,
-    private route: ActivatedRoute
   ) {
-    // Initialize form with an empty array for open_flot
     this.form = this.fb.group({
-      id: <number | null>(null),
-      name: [{value: '', disabled: true}],
-      open_flot: this.fb.array([]), // Empty array initialization
-      latest_close_floot: [{}],
-      plaques: [{}],
+      name: [{ value: '', disabled: true }, Validators.required],
+      close_flot: this.fb.array([])
     });
   }
 
   ngOnInit(): void {
-    this.getChips(); // Assuming this is where you fetch the chips data
+    this.tableId = +this.route.snapshot.paramMap.get('id')!;
+    this.loadTableData();
+  }
 
-    this.route.params.pipe(
-      switchMap(params => {
-        if (params['id']) {
-          return this.tableService.getTable(params['id']);
-        }
-        return of(null);
-      })
-    ).subscribe(res => {
-      if (res) {
-        this.data = res;
-        this.form.patchValue({
-          id: res.id,
-          name: res.name,
-          latest_close_floot: res.latest_close_floot || {},
-          plaques: res.plaques || {},
-        });
+  get closeFlot(): FormArray {
+    return this.form.get('close_flot') as FormArray;
+  }
 
-        this.initOpenFlotArray();
-      }
+  loadTableData(): void {
+    this.tableService.getTable(this.tableId).subscribe(data => {
+      this.tableData = data;
+      this.form.patchValue({ name: data.name });
+      this.setCloseFlotData(data.latest_close_floot.close_flot);
     });
   }
 
-  get openFlot(): FormArray {
-    return this.form.get('open_flot') as FormArray;
-  }
-
-  getChips(): void {
-    this.chipService.getChips().subscribe(data => {
-      this.chipData = data;
-    });
-  }
-
-  // Now called after data is set
-  initOpenFlotArray(): void {
-    const openFlotArray = this.form.get('open_flot') as FormArray;
-    openFlotArray.clear(); // Clear existing controls to avoid duplicates
-
-    // Populate open_flot array based on this.data
-    this.denominations.forEach(denomination => {
-      const quantity = this.data.open_flot?.[denomination] || 0;
-      openFlotArray.push(this.fb.group({
-        denomination: [{value: denomination, disabled: true}],
-        quantity: [quantity, Validators.required]
+  setCloseFlotData(closeFlotData: { [key: string]: number }): void {
+    Object.keys(closeFlotData).forEach(key => {
+      this.closeFlot.push(this.fb.group({
+        denomination: [{ value: key, disabled: true }],
+        quantity: [closeFlotData[key], Validators.required]
       }));
     });
   }
 
-  getCloseQuantity(denomination: number): number {
-    return this.form.value.latest_close_floot?.close_flot[denomination] || 0;
-  }
-
-  getPlaqueQuantity(denomination: number): number {
-    return this.form.value.plaques?.[denomination] || 0;
-  }
+  sortKeys = (a: KeyValue<string, number>, b: KeyValue<string, number>): number => {
+    return parseFloat(a.key) - parseFloat(b.key);
+  };
 
   updateCloseFloot(): void {
-    if (this.form.invalid) return;
+    if (this.form.valid) {
+      const updatedCloseFloot = this.closeFlot.getRawValue().reduce((result: any, item: any) => {
+        result[item.denomination] = item.quantity;
+        return result;
+      }, {});
 
-    const closingFleetData = this.openFlot.controls.reduce((acc, control) => {
-      const denomination = control.get('denomination')?.value;
-      const quantity = control.get('quantity')?.value; // Get the latest value from the quantity field
-      acc[denomination] = quantity; // Store it in the closingFleetData object
-      return acc;
-    }, {} as { [key: number]: number });
+      const updatedData = {
+        table_id: this.tableId,
+        game_day: this.tableData.latest_close_floot.game_day,
+        close_flot: updatedCloseFloot
+      };
 
-    console.log('Closing fleet data', closingFleetData);
+      console.log('Updated Data:', updatedData); // Log to check the data structure
 
-    this.tableService.updateCloseTable(this.form.value.id, { close_flot: closingFleetData })
-      .subscribe((res) => {
-        if (res) {
-          console.log('Close flot updated successfully', res);
-          this.notificationService.showSuccess(res.message);
+      this.tableService.updateCloseTable(updatedData).subscribe(
+        res => {
+          this.notifyService.showSuccess(res.message);
           this.router.navigate(['/table']);
+        },
+        error => {
+          console.error('Error updating Close Float data', error);
         }
-      });
+      );
+    }
   }
+
 
 }

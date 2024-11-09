@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {catchError, Observable} from "rxjs";
+import {catchError, Observable, switchMap} from "rxjs";
 import {BaseService} from "./base.service";
 import {GameDay, TableHall} from "../interfaces/table";
 
@@ -19,9 +19,16 @@ export class TableService extends BaseService {
   closeTable(data: any): Observable<any> {
     return this.post<any>('table/close-table/', data)
   }
-  updateCloseTable(id: number, data: any): Observable<any> {
-    return this.put<any>(`table/close-table/${id}/`, data)
+  updateCloseTable(updatedData: any): Observable<any> {
+    const id = updatedData.table_id;
+    const data = {
+      table_id: updatedData.table_id,  // Include table_id
+      game_day: updatedData.game_day,
+      close_flot: updatedData.close_flot
+    };
+    return this.put<any>(`table/close-table/${id}/`, data);
   }
+
 
   closePlaque(data: any): Observable<any> {
     return this.post<any>('table/plaque/', data)
