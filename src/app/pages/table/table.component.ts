@@ -60,6 +60,7 @@ export class TableComponent implements OnInit {
               id: 0,
               plaques: {quantity: 0},
               plaques_total: 0,
+              game_day: 0,
               result: 0,
               status: "open",
               created_at: new Date().toISOString(),
@@ -162,8 +163,6 @@ export class TableComponent implements OnInit {
       game_day: this.gameDayId,
       plaques: this.closePlaqueQuantities[id],
     };
-
-    console.log('Close plaque:', plaqueData);
 
     this.tableService.closePlaque(plaqueData).subscribe({
       next: (response) => {

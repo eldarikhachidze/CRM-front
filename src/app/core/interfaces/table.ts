@@ -9,6 +9,7 @@ export interface Plaque {
   plaques_total: number;
   result: number;
   status: string;
+  game_day: number;
   created_at: string;
   updated_at?: any;
   deleted_at?: any;

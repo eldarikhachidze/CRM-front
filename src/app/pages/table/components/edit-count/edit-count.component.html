@@ -1,9 +1,9 @@
-<div *ngIf="tableData">
-  <h2>Table Name: {{ tableData.name }}</h2>
+<div>
+  <p><strong>Name:</strong> {{ form.get('name')?.value }}</p>
 
   <form [formGroup]="form" (ngSubmit)="updateCloseFloot()">
-    <div formArrayName="close_flot">
-      <div *ngFor="let control of closeFlot.controls; let i = index" [formGroupName]="i">
+    <div formArrayName="plaques"> <!-- Corrected formArrayName to "plaques" -->
+      <div *ngFor="let control of plaques.controls; let i = index" [formGroupName]="i">
         <mat-form-field class="example-full-width">
           <mat-label>Denomination</mat-label>
           <input matInput formControlName="denomination" readonly>

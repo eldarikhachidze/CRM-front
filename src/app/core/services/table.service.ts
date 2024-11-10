@@ -22,7 +22,7 @@ export class TableService extends BaseService {
   updateCloseTable(updatedData: any): Observable<any> {
     const id = updatedData.table_id;
     const data = {
-      table_id: updatedData.table_id,  // Include table_id
+      table_id: updatedData.table_id,
       game_day: updatedData.game_day,
       close_flot: updatedData.close_flot
     };
@@ -32,6 +32,16 @@ export class TableService extends BaseService {
 
   closePlaque(data: any): Observable<any> {
     return this.post<any>('table/plaque/', data)
+  }
+
+  updatePlaque(updatedData: any): Observable<any> {
+    const id = updatedData.table_id;
+    const data = {
+      table_id: updatedData.table_id,
+      game_day: updatedData.game_day,
+      plaques: updatedData.plaques
+    };
+    return this.put<any>(`table/plaque/${id}/`, data);
   }
 
   createGameDay(date: string): Observable<any> {
