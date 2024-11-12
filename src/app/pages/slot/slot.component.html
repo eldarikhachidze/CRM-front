@@ -6,8 +6,10 @@
         <button mat-raised-button (click)="closeGameDay(gameDate)">Close Day</button>
       </div>
       <p><strong>Total Daily Amount for All Halls: </strong> {{ slotPitData.total_daily_amount }}₾</p>
-      <p><strong>Total Daily Amount for All Halls: </strong> {{ getTotalMoneyByDollar(slotPitData.total_daily_amount) }}
-        $</p>
+      <p>
+        <strong>Total Daily Amount for All Halls: </strong> {{ getTotalMoneyByDollar(slotPitData.total_daily_amount) }}
+        $
+      </p>
       <div *ngFor="let hall of slotPitData.halls" class="hall-box">
         <!-- Hall Name -->
         <h2>{{ hall.name }}</h2>

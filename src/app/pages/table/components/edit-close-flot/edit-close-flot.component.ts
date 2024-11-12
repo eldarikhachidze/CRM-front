@@ -23,7 +23,7 @@ export class EditCloseFlotComponent implements OnInit {
     private router: Router,
   ) {
     this.form = this.fb.group({
-      name: [{ value: '', disabled: true }, Validators.required],
+      name: [{value: '', disabled: true}, Validators.required],
       close_flot: this.fb.array([])
     });
   }
@@ -40,7 +40,7 @@ export class EditCloseFlotComponent implements OnInit {
   loadTableData(): void {
     this.tableService.getTable(this.tableId).subscribe(data => {
       this.tableData = data;
-      this.form.patchValue({ name: data.name });
+      this.form.patchValue({name: data.name});
       this.setCloseFlotData(data.latest_close_floot.close_flot);
     });
   }
@@ -48,7 +48,7 @@ export class EditCloseFlotComponent implements OnInit {
   setCloseFlotData(closeFlotData: { [key: string]: number }): void {
     Object.keys(closeFlotData).forEach(key => {
       this.closeFlot.push(this.fb.group({
-        denomination: [{ value: key, disabled: true }],
+        denomination: [{value: key, disabled: true}],
         quantity: [closeFlotData[key], Validators.required]
       }));
     });
@@ -71,15 +71,13 @@ export class EditCloseFlotComponent implements OnInit {
         close_flot: updatedCloseFloot
       };
 
-      console.log('Updated Data:', updatedData); // Log to check the data structure
-
       this.tableService.updateCloseTable(updatedData).subscribe(
         res => {
           this.notifyService.showSuccess(res.message);
           this.router.navigate(['/table']);
         },
         error => {
-          console.error('Error updating Close Float data', error);
+          this.notifyService.showError(error.error.error);
         }
       );
     }

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TableService} from "../../../../core/services/table.service";
 import {NotificationService} from "../../../../core/services/notification.service";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {of, switchMap} from "rxjs";
 
 @Component({
@@ -12,7 +12,6 @@ import {of, switchMap} from "rxjs";
 })
 export class EditCountComponent implements OnInit {
   form: FormGroup;
-  tableData: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,17 +39,12 @@ export class EditCountComponent implements OnInit {
       })
     ).subscribe(res => {
       if (res) {
-        console.log(res);  // Full response for debugging
-        console.log('Game Day:', res.latest_plaque?.game_day);  // Log the game_day value
-
-        // Patch the form with the retrieved values
         this.form.patchValue({
           id: res.id,
           name: res.name,
-          game_day: res.latest_plaque?.game_day,  // This should be 26 based on your log
+          game_day: res.latest_plaque?.game_day,
         });
 
-        // Set plaque data in the form array
         this.setPlaqueData(res.latest_plaque.plaques);
       }
     });
@@ -83,17 +77,13 @@ export class EditCountComponent implements OnInit {
         plaques: updatedPlaques
       }
 
-      console.log('Updated Data:', updatedData);
-
       this.tableService.updatePlaque(updatedData).subscribe(
         res => {
-          console.log('Response:', res);
           this.notificationService.showSuccess(res.message);
           this.router.navigate(['/table']);
         },
         err => {
-          console.error('Error:', err);
-          this.notificationService.showError(err.error.message);
+          this.notificationService.showError(err.error.error);
         }
       );
     }

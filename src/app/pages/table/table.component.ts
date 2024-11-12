@@ -90,15 +90,10 @@ export class TableComponent implements OnInit {
 
 
   createNewGameDay(currentGameDay: string) {
-    console.log(currentGameDay);
-
-    // Parse the current game day date
     const currentDate = new Date(currentGameDay);
 
-    // Add one day to the current game day
     currentDate.setDate(currentDate.getDate() + 1);
 
-    // Format the new date back to YYYY-MM-DD
     const newGameDay = currentDate.toISOString().split('T')[0];
 
     const dialogRef = this.dialog.open(ConfirmLogoutDialogComponent, {
@@ -128,7 +123,7 @@ export class TableComponent implements OnInit {
 
 
   sortKeys = (a: KeyValue<string, number>, b: KeyValue<string, number>): number => {
-    return parseFloat(a.key) - parseFloat(b.key);
+    return parseFloat(b.key) - parseFloat(a.key);
   };
 
   closeTable(id: number): void {
@@ -141,20 +136,12 @@ export class TableComponent implements OnInit {
     this.tableService.closeTable(closeData).subscribe({
       next: (response) => {
         this.notificationService.showSuccess(response.message);
-        this.getTables(); // Refresh the tables if needed
+        this.getTables();
       },
       error: (error) => {
-        console.log('Error response:', error); // Log the entire error response for debugging
-
-        console.log('Error message:', error.error.error); // Log the error message for debugging
         this.notificationService.showError(error.error.error);
       }
     });
-  }
-
-  editTable(id: number) {
-    console.log('Edit table:', id);
-
   }
 
   closePlaque(id: number) {
@@ -167,12 +154,9 @@ export class TableComponent implements OnInit {
     this.tableService.closePlaque(plaqueData).subscribe({
       next: (response) => {
         this.notificationService.showSuccess(response.message);
-        this.getTables(); // Refresh the tables if needed
+        this.getTables();
       },
       error: (error) => {
-        console.log('Error response:', error); // Log the entire error response for debugging
-
-        console.log('Error message:', error.error.error); // Log the error message for debugging
         this.notificationService.showError(error.error.error);
       }
     });

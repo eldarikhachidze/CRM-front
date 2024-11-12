@@ -6,9 +6,14 @@
           <h1>Game Date: {{ gameDay }}</h1>
           <button mat-raised-button (click)="createNewGameDay(gameDay)">Close Day</button>
         </div>
+        <p>
+          <strong>Total Drop For All Halls: </strong>
+          $
+        </p>
       </div>
       <div class="hall-box" *ngFor="let hall of hallData">
         <h2>{{ hall.name }}</h2>
+        <p><strong>Total Drop: </strong> ₾</p>
         <div class="table-box-container">
           <div class="table" *ngFor="let item of hall.tables">
             <mat-card class="example-card" appearance="outlined">
@@ -28,12 +33,20 @@
                 </mat-menu>
 
                 <mat-card-subtitle>
-                  <div class="status-section">
-                    <mat-card-subtitle>{{ item.latest_close_floot.status ? 'Open' : 'Closed' }}</mat-card-subtitle>
-                    <mat-card-subtitle>{{ item.latest_close_floot.close_date | date: 'HH:mm' }}</mat-card-subtitle>
-                    <mat-card-subtitle *ngIf="item.latest_close_floot.updated_at">
-                      Edited: {{ item.latest_close_floot.updated_at | date: 'HH:mm' }}
-                    </mat-card-subtitle>
+                  <div>
+                    <div class="status-section">
+                      <mat-card-subtitle>{{ item.latest_close_floot.status ? 'Open' : 'Closed' }}</mat-card-subtitle>
+                      <mat-card-subtitle>{{ item.latest_close_floot.close_date | date: 'HH:mm' }}</mat-card-subtitle>
+                      <mat-card-subtitle *ngIf="item.latest_close_floot.updated_at">
+                        Edited: {{ item.latest_close_floot.updated_at | date: 'HH:mm' }}
+                      </mat-card-subtitle>
+                    </div>
+                    <div class="status-section">
+                      <mat-card-subtitle *ngIf="!item.latest_plaque.status">
+                        Counted: {{ item.latest_plaque.created_at | date: 'HH:mm' }}</mat-card-subtitle>
+                      <mat-card-subtitle *ngIf="item.latest_plaque.updated_at">
+                        Edited: {{ item.latest_plaque.updated_at | date: 'HH:mm' }}</mat-card-subtitle>
+                    </div>
                   </div>
                 </mat-card-subtitle>
               </mat-card-header>
@@ -91,7 +104,7 @@
                   </table>
                   <div class="result_section">
                     <h4>Result</h4>
-                    <h2>{{ item.last_result }}</h2> <!-- Use safe navigation and fallback -->
+                    <h2>{{ item.last_result }}</h2>
                   </div>
                 </div>
               </mat-card-content>
