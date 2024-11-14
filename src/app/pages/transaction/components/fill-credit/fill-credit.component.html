@@ -1,8 +1,29 @@
-<div class="transaction-content">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="transaction-form">
-    <mat-form-field>
-      <input matInput formControlName="fillCredit" placeholder="Fill/Credit" />
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">Save</button>
-  </form>
-</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Select Table ID</mat-label>
+    <mat-select formControlName="table_id">
+      <!-- Search Input (standalone) -->
+      <mat-option>
+        <input
+          type="text"
+          placeholder="Search..."
+          [(ngModel)]="searchTerm"
+          (input)="filterTables()"
+          matInput
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-option>
+
+      <mat-option *ngFor="let table of filteredTables" [value]="table.id">
+        {{ table.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Fill Credit</mat-label>
+    <input matInput formControlName="fillCredit" placeholder="Credit Amount" type="number" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>
