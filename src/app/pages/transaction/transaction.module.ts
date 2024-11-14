@@ -6,19 +6,27 @@ import { DiscountLiveComponent } from './components/discount-live/discount-live.
 import { DiscountSlotComponent } from './components/discount-slot/discount-slot.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
+import { FillCreditComponent } from './components/fill-credit/fill-credit.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
   declarations: [
     TransactionComponent,
     DiscountLiveComponent,
-    DiscountSlotComponent
+    DiscountSlotComponent,
+    FillCreditComponent
   ],
   imports: [
     CommonModule,
     TransactionRoutingModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule
   ]
 })
 export class TransactionModule { }

@@ -1,0 +1,8 @@
+<div class="transaction-content">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="transaction-form">
+    <mat-form-field>
+      <input matInput formControlName="fillCredit" placeholder="Fill/Credit" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+</div>

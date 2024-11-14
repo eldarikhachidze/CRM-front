@@ -1,130 +1,140 @@
 <div class="list">
-  <div class="grid-container">
-    <div class="table-container">
-      <div class="table-header">
-        <div class="table-header">
-          <h1>Game Date: {{ gameDay }}</h1>
-          <button mat-raised-button (click)="createNewGameDay(gameDay)">Close Day</button>
-        </div>
-        <p>
-          <strong>Total Drop For All Halls: </strong>
-          $
-        </p>
-      </div>
-      <div class="hall-box" *ngFor="let hall of hallData">
-        <h2>{{ hall.name }}</h2>
-        <p><strong>Total Drop: </strong> ₾</p>
-        <div class="table-box-container">
-          <div class="table" *ngFor="let item of hall.tables">
-            <mat-card class="example-card" appearance="outlined">
-              <mat-card-header>
-                <mat-card-title
-                  style="display: flex; justify-content: space-between; align-items: center; width: 100%;">{{ item.name }}
-                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-
-                </mat-card-title>
-
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item [routerLink]="['edit/', item.id]">Edit Close Chips</button>
-                  <button mat-menu-item [routerLink]="['edit/plaques/', item.id]">Edit Plaques</button>
-
-                </mat-menu>
-
-                <mat-card-subtitle>
-                  <div>
-                    <div class="status-section">
-                      <mat-card-subtitle>{{ item.latest_close_floot.status ? 'Open' : 'Closed' }}</mat-card-subtitle>
-                      <mat-card-subtitle>{{ item.latest_close_floot.close_date | date: 'HH:mm' }}</mat-card-subtitle>
-                      <mat-card-subtitle *ngIf="item.latest_close_floot.updated_at">
-                        Edited: {{ item.latest_close_floot.updated_at | date: 'HH:mm' }}
-                      </mat-card-subtitle>
-                    </div>
-                    <div class="status-section">
-                      <mat-card-subtitle *ngIf="!item.latest_plaque.status">
-                        Counted: {{ item.latest_plaque.created_at | date: 'HH:mm' }}</mat-card-subtitle>
-                      <mat-card-subtitle *ngIf="item.latest_plaque.updated_at">
-                        Edited: {{ item.latest_plaque.updated_at | date: 'HH:mm' }}</mat-card-subtitle>
-                    </div>
-                  </div>
-                </mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                <div class="chips-card">
-                  <table>
-                    <thead>
-                    <tr>
-                      <th>Chips</th>
-                      <th>Quantity</th>
-                      <th>CloseQNT</th>
-                      <th>PLQ</th>
-                      <th>Tip</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let chip of item.open_flot | keyvalue : sortKeys">
-                      <td>{{ chip.key }}</td> <!-- Denomination -->
-                      <td class="center">{{ chip.value }}</td> <!-- Quantity -->
-                      <td>
-                        <input
-                          class="close-input"
-                          placeholder="QNTT"
-                          type="number"
-                          [(ngModel)]="closeFlotQuantities[item.id][chip.key]"
-                          [value]="item.latest_close_floot.close_flot[chip.key]"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="close-input"
-                          placeholder="QNTT"
-                          type="number"
-                          [(ngModel)]="closePlaqueQuantities[item.id][chip.key]"
-                          [value]="item.latest_plaque.plaques[chip.key]"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="close-input"
-                          placeholder="QNTT"
-                          type="number"
-                          value="0"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Total</td>
-                      <td>{{ item.open_flot_total }}</td>
-                      <td>{{ item.latest_close_floot.close_flot_total }}</td>
-                      <td>{{ item.latest_plaque.plaques_total }}</td>
-                      <td>100</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                  <div class="result_section">
-                    <h4>Result</h4>
-                    <h2>{{ item.last_result }}</h2>
-                  </div>
+    <div class="grid-container">
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-header">
+                    <h1>Game Date: {{ gameDay }}</h1>
+                    <button mat-raised-button (click)="createNewGameDay(gameDay)">Close Day</button>
                 </div>
-              </mat-card-content>
-              <mat-card-footer class="example-card-footer">
-                <mat-chip-set aria-label="Actions">
-                  <mat-chip>
-                    <button mat-button color="primary">Edit</button>
-                  </mat-chip>
-                  <mat-chip>
-                    <button mat-button color="warn" (click)="closeTable(item.id)">Close</button>
-                  </mat-chip>
-                  <mat-chip>
-                    <button mat-button color="warn" (click)="closePlaque(item.id)">Count</button>
-                  </mat-chip>
-                </mat-chip-set>
-              </mat-card-footer>
-            </mat-card>
-          </div>
+                <p>
+                    <strong>Total Drop For All Halls: </strong>
+                    $
+                </p>
+            </div>
+            <div class="hall-box" *ngFor="let hall of hallData">
+                <h2>{{ hall.name }}</h2>
+                <p><strong>Total Drop: </strong> ₾</p>
+                <div class="table-box-container">
+                    <div class="table" *ngFor="let item of hall.tables">
+                        <mat-card class="example-card" appearance="outlined">
+                            <mat-card-header>
+                                <mat-card-title
+                                        style="display: flex; justify-content: space-between; align-items: center; width: 100%;">{{ item.name }}
+                                    <button mat-icon-button [matMenuTriggerFor]="menu"
+                                            aria-label="Example icon-button with a menu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+
+                                </mat-card-title>
+
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item [routerLink]="['edit/', item.id]">Edit Close Chips</button>
+                                    <button mat-menu-item [routerLink]="['edit/plaques/', item.id]">Edit Plaques
+                                    </button>
+
+                                </mat-menu>
+
+                                <mat-card-subtitle>
+                                    <div>
+                                        <div class="status-section">
+                                            <mat-card-subtitle>{{ item.latest_close_floot.status ? 'Open' : 'Closed' }}</mat-card-subtitle>
+                                            <mat-card-subtitle>{{ item.latest_close_floot.close_date | date: 'HH:mm' }}</mat-card-subtitle>
+                                            <mat-card-subtitle *ngIf="item.latest_close_floot.updated_at">
+                                                Edited: {{ item.latest_close_floot.updated_at | date: 'HH:mm' }}
+                                            </mat-card-subtitle>
+                                        </div>
+                                        <div class="status-section">
+                                            <mat-card-subtitle *ngIf="!item.latest_plaque.status">
+                                                Counted: {{ item.latest_plaque.created_at | date: 'HH:mm' }}
+                                            </mat-card-subtitle>
+                                            <mat-card-subtitle *ngIf="item.latest_plaque.updated_at">
+                                                Edited: {{ item.latest_plaque.updated_at | date: 'HH:mm' }}
+                                            </mat-card-subtitle>
+                                        </div>
+                                    </div>
+                                </mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <div class="chips-card">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Chips</th>
+                                            <th>Quantity</th>
+                                            <th>CloseQNT</th>
+                                            <th>PLQ</th>
+                                            <th>Tip</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let chip of item.open_flot | keyvalue : sortKeys">
+                                            <td>{{ chip.key }}</td> <!-- Denomination -->
+                                            <td class="center">{{ chip.value }}</td> <!-- Quantity -->
+                                            <td>
+                                                <input
+                                                        class="close-input"
+                                                        placeholder="QNTT"
+                                                        type="number"
+                                                        [(ngModel)]="closeFlotQuantities[item.id][chip.key]"
+                                                        [value]="item.latest_close_floot.close_flot[chip.key]"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                        class="close-input"
+                                                        placeholder="QNTT"
+                                                        type="number"
+                                                        [(ngModel)]="closePlaqueQuantities[item.id][chip.key]"
+                                                        [value]="item.latest_plaque.plaques[chip.key]"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                        class="close-input"
+                                                        placeholder="QNTT"
+                                                        type="number"
+                                                        value="0"
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td>{{ item.open_flot_total }}</td>
+                                            <td>{{ item.latest_close_floot.close_flot_total }}</td>
+                                            <td>{{ item.latest_plaque.plaques_total }}</td>
+                                            <td>100</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="result_section">
+                                        <div class="result">
+                                            <h5>Fill/Credit:</h5>
+                                            <h3>-100/200</h3>
+                                        </div>
+                                        <div class="result">
+                                            <h4>Result: </h4>
+                                            <h2>{{ item.last_result }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                            <mat-card-footer class="example-card-footer">
+                                <mat-chip-set aria-label="Actions">
+                                    <mat-chip>
+                                        <button mat-button color="primary">Edit</button>
+                                    </mat-chip>
+                                    <mat-chip>
+                                        <button mat-button color="warn" (click)="closeTable(item.id)">Close</button>
+                                    </mat-chip>
+                                    <mat-chip>
+                                        <button mat-button color="warn" (click)="closePlaque(item.id)">Count</button>
+                                    </mat-chip>
+                                </mat-chip-set>
+                            </mat-card-footer>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

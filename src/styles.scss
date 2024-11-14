@@ -264,15 +264,23 @@ path {
 
 .result_section {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  .result {
+    display: flex;
+    align-items: center;
+    h5 {
+      margin: unset;
+    }
+    h3 {
+      margin: unset;
+    }
+    h4 {
+      margin: unset;
+    }
 
-  h4 {
-    margin: unset;
-  }
-
-  h2 {
-    margin: unset;
+    h2 {
+      margin: unset;
+    }
   }
 }
 
@@ -286,4 +294,25 @@ path {
 
 mat-form-field {
   width: 200px!important;
+}
+
+
+//** transaction content **//
+
+.transaction-content {
+  display: inline-block; // ensures width is only as wide as content
+  padding: 20px;
+
+  .transaction-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    width: 100%; // ensures form takes up full width of the content div
+    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  }
 }

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {TransactionComponent} from "./transaction.component";
 import {DiscountLiveComponent} from "./components/discount-live/discount-live.component";
 import {DiscountSlotComponent} from "./components/discount-slot/discount-slot.component";
+import {FillCreditComponent} from "./components/fill-credit/fill-credit.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'slot',
         component: DiscountSlotComponent
+      },
+      {
+        path: 'fill-credit',
+        component: FillCreditComponent
       }
     ]
   }
