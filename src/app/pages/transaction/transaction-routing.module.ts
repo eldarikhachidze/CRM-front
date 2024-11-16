@@ -4,6 +4,7 @@ import {TransactionComponent} from "./transaction.component";
 import {DiscountLiveComponent} from "./components/discount-live/discount-live.component";
 import {DiscountSlotComponent} from "./components/discount-slot/discount-slot.component";
 import {FillCreditComponent} from "./components/fill-credit/fill-credit.component";
+import {EditFillCreditComponent} from "./components/edit-fill-credit/edit-fill-credit.component";
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'fill-credit',
         component: FillCreditComponent
+      },
+      {
+        path: 'fill-credit/:id',
+        component: EditFillCreditComponent
       }
     ]
   }
