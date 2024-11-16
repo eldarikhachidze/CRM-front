@@ -265,17 +265,28 @@ path {
 .result_section {
   display: flex;
   flex-direction: column;
+
   .result {
     display: flex;
     align-items: center;
+
     h5 {
       margin: unset;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
     }
+
     h3 {
       margin: unset;
     }
+
     h4 {
       margin: unset;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     h2 {
@@ -293,7 +304,7 @@ path {
 //** input styles **//
 
 mat-form-field {
-  width: 200px!important;
+  width: 200px !important;
 }
 
 
@@ -315,4 +326,15 @@ mat-form-field {
     -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
     -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   }
+}
+
+
+//** color **//
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
 }

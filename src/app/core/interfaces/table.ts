@@ -35,6 +35,8 @@ export interface Table {
   last_result: number;
   latest_plaque: Plaque;
   latest_close_floot: Latestclosefloot;
+  total_credit_today: number;
+  total_fill_today: number;
   name: string;
   open_flot_total: number;
   result: number;
