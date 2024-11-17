@@ -29,7 +29,9 @@ export class FillCreditComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       fillCredit: ['', Validators.required],
-      table_id: ['', Validators.required]
+      table_id: ['', Validators.required],
+      start: [null],
+      end: [null],
     });
   }
 
@@ -47,10 +49,32 @@ export class FillCreditComponent implements OnInit {
     });
   }
 
-  getFillCredit(): void {
-    this.transactionService.getFillCredits().subscribe((data) => {
-      this.fillCredit = data;
-    });
+  getFillCredit(startDate?: string, endDate?: string): void {
+    const params = startDate && endDate ? {start_date: startDate, end_date: endDate} : {};
+
+    this.transactionService.getFillCredits(params).subscribe((data) => {
+        this.fillCredit = data;
+      },
+      (error) => {
+        this.notificationService.showError(error.error.message);
+      }
+    );
+  }
+
+
+  submitDateRange() {
+    const startDate = this.form.get('start')?.value;
+    const endDate = this.form.get('end')?.value;
+
+    const formattedStartDate = startDate ? this.formatDateToYYYYMMDD(new Date(startDate)) : undefined;
+    const formattedEndDate = endDate ? this.formatDateToYYYYMMDD(new Date(endDate)) : undefined;
+
+    this.getFillCredit(formattedStartDate, formattedEndDate);
+  }
+
+  resetDateRange() {
+    this.form.patchValue({start: null, end: null});
+    this.getFillCredit();
   }
 
   getGameDay(): void {
@@ -79,5 +103,13 @@ export class FillCreditComponent implements OnInit {
     }, (error) => {
       this.notificationService.showError(error.error.error);
     });
+  }
+
+  formatDateToYYYYMMDD(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    const day = date.getDate().toString().padStart(2, '0'); // Get the day
+
+    return `${year}-${month}-${day}`;
   }
 }

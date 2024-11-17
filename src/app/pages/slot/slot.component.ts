@@ -125,7 +125,6 @@ export class SlotComponent implements OnInit {
 
 
   closeGameDay(date: any): void {
-    console.log(date);
     const dialogRef = this.dialog.open(ConfirmLogoutDialogComponent, {
       data: {
         contentText: 'Do you really want to Close the day?',

@@ -44,35 +44,11 @@ body {
 .progress {
   .progress-content {
     position: fixed;
-    background-color: #ddd2d2;
-
-    .filter-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding: 10px;
-      gap: 25px;
-
-      .actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-
-        button {
-          height: 100%;
-          width: 100%;
-          background-color: rgba(87, 91, 87, 0.75);
-        }
-      }
-
-      .filter-input {
-        padding: unset;
-        width: 100%;
-      }
-    }
+    padding: 20px;
+    border: 1px solid black;
 
     .progress-container {
       border-radius: 8px;
-      padding: 20px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto auto;
@@ -136,6 +112,40 @@ body {
 
 }
 
+//** filter section **//
+
+.filter-section {
+  display: flex;
+  gap: 25px;
+  padding-bottom: 20px;
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    button {
+      height: 100%;
+      width: 100%;
+      background-color: rgba(87, 91, 87, 0.75);
+    }
+  }
+
+  .filter-input {
+    padding: unset;
+    width: 270px !important;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+
+    .mat-mdc-text-field-wrapper {
+      width: 270px !important;
+    }
+  }
+}
+
 
 .progress-labels {
   display: flex;
@@ -172,7 +182,8 @@ path {
 
 //** table styles **//
 .list {
-  margin-bottom: 50px;
+  padding: 50px 0;
+  background-color: #ddd2d2;
 
   .grid-container {
     display: grid;
@@ -181,9 +192,9 @@ path {
     padding: 0 50px;
 
     .table-container {
-      background-color: #ddd2d2;
       overflow: auto;
       padding: 10px;
+      border: 1px solid black;
 
       .table-header {
         display: flex;
@@ -192,7 +203,6 @@ path {
         button {
           background-color: rgba(87, 91, 87, 0.75);
         }
-
       }
     }
   }
@@ -310,21 +320,34 @@ mat-form-field {
 
 //** transaction content **//
 
-.transaction-content {
-  display: inline-block; // ensures width is only as wide as content
-  padding: 20px;
+.transaction-page {
+  height: calc(100vh - 65px);
+  background-color: #ddd2d2;
 
-  .transaction-form {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-    width: 100%; // ensures form takes up full width of the content div
-    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-    -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-    -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  .transaction-content {
+    display: inline-block;
+    padding: 20px;
+
+    .transaction-form {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      background-color: #b6d3b5;
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+      width: 100%;
+      -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+      -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+      -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+      -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .transaction-table {
+    height: 70%;
+    padding: 20px;
+    margin: 0 20px;
+    background-color: #b6d3b5;
   }
 }
 
