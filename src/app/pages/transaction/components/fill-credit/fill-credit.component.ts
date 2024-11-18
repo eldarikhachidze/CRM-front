@@ -105,6 +105,15 @@ export class FillCreditComponent implements OnInit {
     });
   }
 
+  delete(id: number): void {
+    this.transactionService.deleteFillCredit(id).subscribe((res) => {
+      this.notificationService.showSuccess(res.message);
+      this.getFillCredit();
+    }, (error) => {
+      this.notificationService.showError(error.error.message);
+    });
+  }
+
   formatDateToYYYYMMDD(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based

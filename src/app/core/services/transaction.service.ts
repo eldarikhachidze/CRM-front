@@ -29,4 +29,8 @@ export class TransactionService extends BaseService {
     return this.put<any>(`transactions/fill-credit/${id}/`, data);
   }
 
+  deleteFillCredit(id: number): Observable<any> {
+    return this.delete<any>(`transactions/fill-credit/${id}/`);
+  }
+
 }

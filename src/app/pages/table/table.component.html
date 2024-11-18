@@ -115,7 +115,8 @@
                     </div>
                     <div class="result">
                       <h4>Result:
-                        <h2 [ngClass]="{'green': item.last_result > 0, 'red': item.last_result < 0}">{{ item.last_result }}</h2>
+                        <h2
+                          [ngClass]="{'green': item.last_result > 0, 'red': item.last_result < 0}">{{ item.last_result }}</h2>
                       </h4>
                     </div>
                   </div>
@@ -123,9 +124,6 @@
               </mat-card-content>
               <mat-card-footer class="example-card-footer">
                 <mat-chip-set aria-label="Actions">
-                  <mat-chip>
-                    <button mat-button color="primary">Edit</button>
-                  </mat-chip>
                   <mat-chip>
                     <button mat-button color="warn" (click)="closeTable(item.id)">Close</button>
                   </mat-chip>
