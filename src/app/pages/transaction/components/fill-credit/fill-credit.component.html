@@ -77,6 +77,11 @@
           <td mat-cell *matCellDef="let item"> {{ item.game_date }} </td>
         </ng-container>
 
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef> time </th>
+          <td mat-cell *matCellDef="let item"> {{ item.created_at | date: 'HH:mm'}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="fill_credit">
           <th mat-header-cell *matHeaderCellDef> Fill Credit</th>
           <td mat-cell *matCellDef="let item"
@@ -97,10 +102,10 @@
         </ng-container>
 
         <!-- Table Header -->
-        <tr mat-header-row *matHeaderRowDef="['table', 'game_date', 'fill_credit', 'actions']"></tr>
+        <tr mat-header-row *matHeaderRowDef="['table', 'game_date', 'time', 'fill_credit', 'actions']"></tr>
 
         <!-- Table Rows -->
-        <tr mat-row *matRowDef="let row; columns: ['table', 'game_date', 'fill_credit', 'actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['table', 'game_date', 'time', 'fill_credit', 'actions']"></tr>
       </table>
 
     </table>
