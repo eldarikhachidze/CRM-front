@@ -90,12 +90,12 @@
         </ng-container>
 
         <ng-container matColumnDef="time">
-          <th mat-header-cell *matHeaderCellDef> time</th>
+          <th mat-header-cell *matHeaderCellDef>Action time</th>
           <td mat-cell *matCellDef="let item"> {{ item.created_at | date: 'HH:mm' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="action-time">
-          <th mat-header-cell *matHeaderCellDef> time</th>
+          <th mat-header-cell *matHeaderCellDef>Create time</th>
           <td mat-cell *matCellDef="let item"> {{ item.action_time | date: 'HH:mm' }}</td>
         </ng-container>
 

@@ -109,7 +109,7 @@ export class FillCreditComponent implements OnInit {
       this.form.reset();
       this.getFillCredit();
     }, (error) => {
-      this.notificationService.showError(error.error.error);
+      this.notificationService.showError(error.error.message);
     });
   }
 
