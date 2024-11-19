@@ -26,15 +26,28 @@
         <input matInput formControlName="fillCredit" placeholder="Credit / Amount" type="number"/>
       </mat-form-field>
 
+      <mat-form-field appearance="fill">
+        <mat-label>Select Action Date</mat-label>
+        <input matInput [matDatepicker]="datePicker" formControlName="action_date" placeholder="Choose a date"/>
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+
+      <!-- Timepicker for action time (24-hour format) -->
+      <mat-form-field appearance="fill">
+        <mat-label>Action Time (24-hour format)</mat-label>
+        <input matInput formControlName="action_time" placeholder="HH:mm" type="text"/>
+      </mat-form-field>
+
       <button mat-raised-button color="primary" type="submit">Submit</button>
     </form>
   </div>
   <div class="transaction-table">
     <div class="filter-section">
-      <mat-form-field (click)="picker.open()" class="filter-input">
+      <mat-form-field (click)="rangePicker.open()" class="filter-input">
         <mat-label>Enter a date range</mat-label>
 
-        <mat-date-range-input [formGroup]="form" [rangePicker]="picker">
+        <mat-date-range-input [formGroup]="form" [rangePicker]="rangePicker">
           <!-- Start Date Input -->
           <input matStartDate formControlName="start" placeholder="Start date" readonly>
 
@@ -46,10 +59,10 @@
         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
 
         <!-- Date Picker Toggle -->
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
 
         <!-- Date Range Picker -->
-        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-date-range-picker #rangePicker></mat-date-range-picker>
       </mat-form-field>
 
       <div class="actions">
@@ -60,7 +73,6 @@
           Reset Date
         </button>
       </div>
-
     </div>
     <table>
       <table mat-table [dataSource]="fillCredit" class="mat-elevation-z8">
@@ -68,24 +80,30 @@
         <!-- Name Column -->
         <ng-container matColumnDef="table">
           <th mat-header-cell *matHeaderCellDef> Table</th>
-          <td mat-cell *matCellDef="let item"> {{ item.table_name }} </td>
+          <td mat-cell *matCellDef="let item"> {{ item.table_name }}</td>
         </ng-container>
 
         <!-- Brand Column -->
         <ng-container matColumnDef="game_date">
           <th mat-header-cell *matHeaderCellDef> Game date</th>
-          <td mat-cell *matCellDef="let item"> {{ item.game_date }} </td>
+          <td mat-cell *matCellDef="let item"> {{ item.game_date }}</td>
         </ng-container>
 
         <ng-container matColumnDef="time">
-          <th mat-header-cell *matHeaderCellDef> time </th>
-          <td mat-cell *matCellDef="let item"> {{ item.created_at | date: 'HH:mm'}} </td>
+          <th mat-header-cell *matHeaderCellDef> time</th>
+          <td mat-cell *matCellDef="let item"> {{ item.created_at | date: 'HH:mm' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action-time">
+          <th mat-header-cell *matHeaderCellDef> time</th>
+          <td mat-cell *matCellDef="let item"> {{ item.action_time | date: 'HH:mm' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="fill_credit">
           <th mat-header-cell *matHeaderCellDef> Fill Credit</th>
           <td mat-cell *matCellDef="let item"
-              [ngClass]="{'green': item.fill_credit > 0, 'red': item.fill_credit < 0}"> {{ item.fill_credit }} </td>
+              [ngClass]="{'green': item.fill_credit > 0, 'red': item.fill_credit < 0}"> {{ item.fill_credit }}
+          </td>
         </ng-container>
 
         <!-- Actions Column -->
@@ -102,10 +120,12 @@
         </ng-container>
 
         <!-- Table Header -->
-        <tr mat-header-row *matHeaderRowDef="['table', 'game_date', 'time', 'fill_credit', 'actions']"></tr>
+        <tr mat-header-row
+            *matHeaderRowDef="['table', 'game_date', 'action-time', 'time', 'fill_credit', 'actions']"></tr>
 
         <!-- Table Rows -->
-        <tr mat-row *matRowDef="let row; columns: ['table', 'game_date', 'time', 'fill_credit', 'actions']"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: ['table', 'game_date', 'action-time', 'time', 'fill_credit', 'actions']"></tr>
       </table>
 
     </table>

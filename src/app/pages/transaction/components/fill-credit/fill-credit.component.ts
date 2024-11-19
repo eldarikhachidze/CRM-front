@@ -30,6 +30,8 @@ export class FillCreditComponent implements OnInit {
     this.form = this.fb.group({
       fillCredit: ['', Validators.required],
       table_id: ['', Validators.required],
+      action_date: [null, Validators.required],  // Datepicker
+      action_time: ['', [Validators.required, Validators.pattern('^([01]?[0-9]|2[0-3]):([0-5][0-9])$')]],
       start: [null],
       end: [null],
     });
@@ -90,15 +92,21 @@ export class FillCreditComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const actionDate = this.formatDateToYYYYMMDD(this.form.value.action_date);
+    const actionTime = this.form.value.action_time ? this.form.value.action_time : null;
 
-    const data = {
+    const data: any = {
       table: this.form.value.table_id,
       game_day: this.gameDayId,
-      fill_credit: this.form.value.fillCredit
-    }
+      fill_credit: this.form.value.fillCredit,
+      action_time: actionTime ? `${actionDate} ${actionTime}` : undefined,  // Only include if actionTime is provided
+    };
+
+    console.log(data);
 
     this.transactionService.createFillCredit(data).subscribe((res) => {
       this.notificationService.showSuccess(res.message);
+      this.form.reset();
       this.getFillCredit();
     }, (error) => {
       this.notificationService.showError(error.error.error);
@@ -114,11 +122,16 @@ export class FillCreditComponent implements OnInit {
     });
   }
 
-  formatDateToYYYYMMDD(date: Date): string {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
-    const day = date.getDate().toString().padStart(2, '0'); // Get the day
-
-    return `${year}-${month}-${day}`;
+  formatDateToYYYYMMDD(date: any): string {
+    if (date) {
+      const d = new Date(date); // Ensure it's a valid date object
+      const year = d.getFullYear();
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const day = d.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } else {
+      return ''; // Or handle it as needed if date is invalid or missing
+    }
   }
+
 }
