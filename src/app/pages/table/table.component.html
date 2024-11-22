@@ -3,8 +3,28 @@
     <div class="table-container">
       <div class="table-header">
         <div class="table-header">
-          <h1>Game Date: {{ gameDay }}</h1>
-          <button mat-raised-button (click)="createNewGameDay(gameDay)">Close Day</button>
+          <div class="table-header-item">
+            <h1>Game Date: {{ gameDay }}</h1>
+            <button mat-raised-button (click)="createNewGameDay(gameDay)">Close Day</button>
+          </div>
+
+          <form [formGroup]="form">
+            <div class="filter-section">
+              <mat-form-field class="filter-input">
+                <input matInput formControlName="date" [matDatepicker]="picker" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <div class="actions">
+                <button mat-raised-button (click)="submitDateRange()">
+                  Search
+                </button>
+                <button mat-raised-button (click)="resetDateRange()">
+                  Reset Date
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
         <p>
           <strong>Total Drop For All Halls: </strong>
@@ -37,18 +57,18 @@
                 <mat-card-subtitle>
                   <div>
                     <div class="status-section">
-                      <mat-card-subtitle>{{ item.latest_close_floot.status ? 'Open' : 'Closed' }}</mat-card-subtitle>
-                      <mat-card-subtitle>{{ item.latest_close_floot.close_date | date: 'HH:mm' }}</mat-card-subtitle>
-                      <mat-card-subtitle *ngIf="item.latest_close_floot.updated_at">
-                        Edited: {{ item.latest_close_floot.updated_at | date: 'HH:mm' }}
+                      <mat-card-subtitle>{{ item.status ? 'Open' : 'Closed' }}</mat-card-subtitle>
+                      <mat-card-subtitle>{{ item.close_date | date: 'HH:mm' }}</mat-card-subtitle>
+                      <mat-card-subtitle *ngIf="item.close_date_updated">
+                        Edited: {{ item.close_date_updated | date: 'HH:mm' }}
                       </mat-card-subtitle>
                     </div>
                     <div class="status-section">
-                      <mat-card-subtitle *ngIf="!item.latest_plaque.status">
-                        Counted: {{ item.latest_plaque.created_at | date: 'HH:mm' }}
+                      <mat-card-subtitle *ngIf="!item.status">
+                        Counted: {{ item.plaques_date | date: 'HH:mm' }}
                       </mat-card-subtitle>
-                      <mat-card-subtitle *ngIf="item.latest_plaque.updated_at">
-                        Edited: {{ item.latest_plaque.updated_at | date: 'HH:mm' }}
+                      <mat-card-subtitle *ngIf="item.plaques_updated">
+                        Edited: {{ item.plaques_updated | date: 'HH:mm' }}
                       </mat-card-subtitle>
                     </div>
                   </div>
@@ -76,7 +96,7 @@
                           placeholder="QNTT"
                           type="number"
                           [(ngModel)]="closeFlotQuantities[item.id][chip.key]"
-                          [value]="item.latest_close_floot.close_flot[chip.key]"
+                          [value]="item.close_flot[chip.key]"
                         />
                       </td>
                       <td>
@@ -85,7 +105,7 @@
                           placeholder="QNTT"
                           type="number"
                           [(ngModel)]="closePlaqueQuantities[item.id][chip.key]"
-                          [value]="item.latest_plaque.plaques[chip.key]"
+                          [value]="item.plaques[chip.key]"
                         />
                       </td>
                       <td>
@@ -100,8 +120,8 @@
                     <tr>
                       <td>Total</td>
                       <td>{{ item.open_flot_total }}</td>
-                      <td>{{ item.latest_close_floot.close_flot_total }}</td>
-                      <td>{{ item.latest_plaque.plaques_total }}</td>
+                      <td>{{ item.close_flot_total }}</td>
+                      <td>{{ item.plaques_total }}</td>
                       <td>100</td>
                     </tr>
                     </tbody>
@@ -109,14 +129,14 @@
                   <div class="result_section">
                     <div class="result">
                       <h5>Fill / Credit:
-                        <h3 class="red"> {{ item.total_fill_today }} </h3> /
-                        <h3 class="green"> {{ item.total_credit_today }} </h3>
+                        <h3 class="red"> -100 </h3> /
+                        <h3 class="green"> 100 </h3>
                       </h5>
                     </div>
                     <div class="result">
                       <h4>Result:
                         <h2
-                          [ngClass]="{'green': item.last_result > 0, 'red': item.last_result < 0}">{{ item.last_result }}</h2>
+                          [ngClass]="{'green': item.table_result > 0, 'red': item.table_result < 0}">{{ item.table_result }}</h2>
                       </h4>
                     </div>
                   </div>

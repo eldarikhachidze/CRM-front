@@ -16,34 +16,23 @@ export interface Plaque {
 
 }
 
-export interface Latestclosefloot {
-  id: number;
-  close_flot: OpenFlot;
-  close_flot_total: number;
-  result: number;
-  close_date?: any;
-  status: string;
-  fill_credit: number;
-  created_at: string;
-  updated_at?: any;
-  deleted_at?: any;
-}
-
 export interface Table {
   id: number;
-  hall: string;
-  last_result: number;
-  latest_plaque: Plaque;
-  latest_close_floot: Latestclosefloot;
-  total_credit_today: number;
-  total_fill_today: number;
   name: string;
   open_flot_total: number;
-  result: number;
-  date_created: string;
-  date_edited?: any;
-  date_deleted?: any;
   open_flot: OpenFlot;
+  status: boolean;
+  close_flot: OpenFlot;
+  close_flot_total: number;
+  close_date?: string;
+  close_date_updated?: string;
+  fill_credit: number;
+  result: number;
+  plaques_total: number;
+  plaques: OpenFlot;
+  plaques_date: string;
+  plaques_updated?: string;
+  table_result: number;
 }
 
 export interface TableHall {
@@ -55,7 +44,6 @@ export interface TableHall {
   tables: Table[];
 }
 
-// src/app/pages/table/close-flot-data.model.ts
 export interface CloseFlotData {
   table_id: number;
   game_day: number;

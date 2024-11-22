@@ -198,10 +198,21 @@ path {
 
       .table-header {
         display: flex;
+        flex-direction: column;
         gap: 15px;
 
-        button {
-          background-color: rgba(87, 91, 87, 0.75);
+        .table-header-item {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+
+          h1 {
+            margin: unset;
+          }
+
+          button {
+            background-color: rgba(87, 91, 87, 0.75);
+          }
         }
       }
     }

@@ -12,6 +12,10 @@ export class TableService extends BaseService {
     return this.get<TableHall[]>('table/hall/')
   }
 
+  test(params: {}): Observable<TableHall[]> {
+    return this.get<TableHall[]>('table/hall/', params)
+  }
+
   getTable(id: number): Observable<any> {
     return this.get<any>(`table/delete/${id}/`)
   }

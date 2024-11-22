@@ -22,6 +22,7 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 @NgModule({
   declarations: [
@@ -36,13 +37,13 @@ import {MatIconModule} from "@angular/material/icon";
     MatSnackBarModule,
     MainLayoutModule,
     BrowserModule,
-    BrowserAnimationsModule,  // Important for Material components
-    MatToolbarModule,  // Add Material modules here
+    BrowserAnimationsModule,
+    MatToolbarModule,
     MatButtonModule,
     MatTableModule,
     ConfirmLogoutDialogComponent,
-    BrowserAnimationsModule,  // Required for MatSnackBar animations
-    MatSnackBarModule, // Required for MatSnackBar
+    BrowserAnimationsModule,
+    MatSnackBarModule,
     TransactionModule,
     MatCardModule,
     MatChipsModule,
@@ -51,6 +52,7 @@ import {MatIconModule} from "@angular/material/icon";
     FormsModule,
     MatMenuModule,
     MatIconModule,
+    MatDatepickerModule,
   ],
   providers: [
     {
