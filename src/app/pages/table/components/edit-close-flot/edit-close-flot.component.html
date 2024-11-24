@@ -1,6 +1,4 @@
 <div *ngIf="tableData">
-  <h2>Table Name: {{ tableData.name }}</h2>
-
   <form [formGroup]="form" (ngSubmit)="updateCloseFloot()">
     <div formArrayName="close_flot">
       <div *ngFor="let control of closeFlot.controls; let i = index" [formGroupName]="i">

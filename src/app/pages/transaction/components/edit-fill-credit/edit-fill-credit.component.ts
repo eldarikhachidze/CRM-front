@@ -32,7 +32,10 @@ export class EditFillCreditComponent implements OnInit{
     this.form = this.fb.group({
       id: ['', Validators.required],
       table_id: ['', Validators.required],
-      fillCredit: ['', Validators.required]
+      table_name: ['', Validators.required],
+      fillCredit: ['', Validators.required],
+      action_date: [null, Validators.required],
+      action_time: ['', [Validators.required, Validators.pattern('^([01]?[0-9]|2[0-3]):([0-5][0-9])$')]],
     });
   }
 
@@ -49,12 +52,23 @@ export class EditFillCreditComponent implements OnInit{
       })
     ).subscribe(res => {
       if (res) {
-        console.log('res', res);
+        const date = new Date(res.action_time);
+        date.setHours(date.getHours() - 4);
+
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const formattedTime = `${hours}:${minutes}`;
+
         this.form.patchValue({
           id: res.id,
+          table_name: res.table,
           fillCredit: res.fill_credit,
           table_id: res.table,
+          action_date: new Date(res.action_time),
+          action_time: formattedTime
         });
+
+        this.searchTerm = this.filteredTables.find(table => table.id === res.table)?.name || '';
       }
     });
   }
@@ -80,17 +94,35 @@ export class EditFillCreditComponent implements OnInit{
   }
 
   onSubmit() {
+    const actionDate = this.formatDateToYYYYMMDD(this.form.value.action_date);
+    const actionTime = this.form.value.action_time ? this.form.value.action_time : null;
+
     const data = {
       table: this.form.value.table_id,
       game_day: this.gameDayId,
-      fill_credit: this.form.value.fillCredit
+      fill_credit: this.form.value.fillCredit,
+      action_time: actionTime ? `${actionDate} ${actionTime}` : undefined,
     }
 
-    console.log(data);
-    console.log(this.form.value.id);
     this.transactionService.updateFillCredit(this.form.value.id, data).subscribe((res) => {
-      this.notificationService.showSuccess('Fill Credit updated successfully');
+      this.notificationService.showSuccess(res.message);
       this.router.navigate(['/transaction/fill-credit']);
-    });
+    }, (error) => {
+      this.notificationService.showError(error.error.message);
+      }
+    );
   }
+
+  formatDateToYYYYMMDD(date: any): string {
+    if (date) {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
+      const day = d.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } else {
+      return '';
+    }
+  }
+
 }

@@ -30,7 +30,7 @@ export class FillCreditComponent implements OnInit {
     this.form = this.fb.group({
       fillCredit: ['', Validators.required],
       table_id: ['', Validators.required],
-      action_date: [null, Validators.required],  // Datepicker
+      action_date: [null, Validators.required],
       action_time: ['', [Validators.required, Validators.pattern('^([01]?[0-9]|2[0-3]):([0-5][0-9])$')]],
       start: [null],
       end: [null],
@@ -54,15 +54,23 @@ export class FillCreditComponent implements OnInit {
   getFillCredit(startDate?: string, endDate?: string): void {
     const params = startDate && endDate ? {start_date: startDate, end_date: endDate} : {};
 
-    this.transactionService.getFillCredits(params).subscribe((data) => {
-        this.fillCredit = data;
+    this.transactionService.getFillCredits(params).subscribe(
+      (data) => {
+        this.fillCredit = data.map((item: any) => {
+          if (item.action_time) {
+            const adjustedDate = new Date(item.action_time);
+            adjustedDate.setHours(adjustedDate.getHours() - 4);
+            return {...item, action_time: adjustedDate.toISOString(), created_at: adjustedDate.toISOString()};
+          }
+          return item;
+        });
+
       },
       (error) => {
         this.notificationService.showError(error.error.message);
       }
     );
   }
-
 
   submitDateRange() {
     const startDate = this.form.get('start')?.value;
@@ -99,10 +107,8 @@ export class FillCreditComponent implements OnInit {
       table: this.form.value.table_id,
       game_day: this.gameDayId,
       fill_credit: this.form.value.fillCredit,
-      action_time: actionTime ? `${actionDate} ${actionTime}` : undefined,  // Only include if actionTime is provided
+      action_time: actionTime ? `${actionDate} ${actionTime}` : undefined,
     };
-
-    console.log(data);
 
     this.transactionService.createFillCredit(data).subscribe((res) => {
       this.notificationService.showSuccess(res.message);
@@ -130,7 +136,7 @@ export class FillCreditComponent implements OnInit {
       const day = d.getDate().toString().padStart(2, '0');
       return `${year}-${month}-${day}`;
     } else {
-      return ''; // Or handle it as needed if date is invalid or missing
+      return '';
     }
   }
 

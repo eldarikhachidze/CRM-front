@@ -1,8 +1,6 @@
 <div>
-  <p><strong>Name:</strong> {{ form.get('name')?.value }}</p>
-
   <form [formGroup]="form" (ngSubmit)="updateCloseFloot()">
-    <div formArrayName="plaques"> <!-- Corrected formArrayName to "plaques" -->
+    <div formArrayName="plaques">
       <div *ngFor="let control of plaques.controls; let i = index" [formGroupName]="i">
         <mat-form-field class="example-full-width">
           <mat-label>Denomination</mat-label>

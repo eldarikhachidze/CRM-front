@@ -41,7 +41,6 @@ export class TableComponent implements OnInit {
     const params = paramsDate ? {date: paramsDate} : {};
     this.tableService.test(params).subscribe((data) => {
       this.hallData = data;
-      console.log(data)
 
       this.hallData.forEach(hall => {
         hall.tables.forEach(table => {
@@ -52,10 +51,20 @@ export class TableComponent implements OnInit {
             this.closeFlotQuantities[table.id][key] = table.close_flot[key] || 0;
             this.closePlaqueQuantities[table.id][key] = table.plaques[key] || 0;
           });
+
+          if (table.close_date) {
+            const adjustedTime = new Date(table.close_date);
+            adjustedTime.setHours(adjustedTime.getHours() - 4);
+            table.close_date = adjustedTime.toISOString()
+          }
+
+          if (table.close_date_updated) {
+            const adjustedTime = new Date(table.close_date_updated);
+            adjustedTime.setHours(adjustedTime.getHours() - 4);
+            table.close_date_updated = adjustedTime.toISOString()
+          }
         });
       });
-
-      console.log(this.hallData);
     });
   }
 
@@ -161,7 +170,7 @@ export class TableComponent implements OnInit {
       const day = d.getDate().toString().padStart(2, '0');
       return `${year}-${month}-${day}`;
     } else {
-      return ''; // Or handle it as needed if date is invalid or missing
+      return '';
     }
   }
 }

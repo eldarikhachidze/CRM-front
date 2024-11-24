@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TableService} from "../../../../core/services/table.service";
 import {NotificationService} from "../../../../core/services/notification.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {of, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-edit-count',
@@ -12,6 +11,8 @@ import {of, switchMap} from "rxjs";
 })
 export class EditCountComponent implements OnInit {
   form: FormGroup;
+  tableData: any;
+  plaque_id!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,38 +22,29 @@ export class EditCountComponent implements OnInit {
     private notificationService: NotificationService
   ) {
     this.form = this.fb.group({
-      id: <number | null>(null),
-      name: [{value: '', disabled: true}, Validators.required],
-      game_day: [{value: '', disabled: true}],
       plaques: this.fb.array([])
     });
   }
 
-
   ngOnInit() {
-    this.route.params.pipe(
-      switchMap(params => {
-        if (params['id']) {
-          return this.tableService.getTable(params['id']);
-        }
-        return of(null);
-      })
-    ).subscribe(res => {
-      if (res) {
-        this.form.patchValue({
-          id: res.id,
-          name: res.name,
-          game_day: res.latest_plaque?.game_day,
-        });
-
-        this.setPlaqueData(res.latest_plaque.plaques);
-      }
-    });
+    this.plaque_id = this.route.snapshot.params['id'];
+    this.loadPlaqueData();
   }
-
 
   get plaques(): FormArray {
     return this.form.get('plaques') as FormArray;
+  }
+
+  loadPlaqueData(): void {
+    this.tableService.getPlaque(this.plaque_id).subscribe(
+      res => {
+        this.tableData = res;
+        this.setPlaqueData(this.tableData.plaques);
+      },
+      error => {
+        this.notificationService.showError(error.error.message);
+      }
+    )
   }
 
   setPlaqueData(plaques: { [key: string]: number }): void {
@@ -72,8 +64,8 @@ export class EditCountComponent implements OnInit {
       }, {});
 
       const updatedData = {
-        table_id: this.form.value.id,
-        game_day: this.form.controls['game_day'].value,
+        plaque_id: this.plaque_id,
+        game_day: this.tableData.game_day,
         plaques: updatedPlaques
       }
 

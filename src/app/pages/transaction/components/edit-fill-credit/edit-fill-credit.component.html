@@ -2,8 +2,9 @@
   <div class="transaction-content">
     <form class="transaction-form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="fill">
-        <mat-label>Select Table ID</mat-label>
-        <mat-select formControlName="id">
+        <mat-label>Select Table</mat-label>
+
+        <mat-select formControlName="table_name">
           <mat-option>
             <input
               type="text"
@@ -18,6 +19,7 @@
           <mat-option *ngFor="let table of filteredTables" [value]="table.id">
             {{ table.name }}
           </mat-option>
+
         </mat-select>
       </mat-form-field>
 
@@ -26,7 +28,19 @@
         <input matInput formControlName="fillCredit" placeholder="Credit / Amount" type="number"/>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <mat-form-field appearance="fill">
+        <mat-label>Select Action Date</mat-label>
+        <input matInput [matDatepicker]="datePicker" formControlName="action_date" placeholder="Choose a date"/>
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Action Time (24-hour format)</mat-label>
+        <input matInput formControlName="action_time" placeholder="HH:mm" type="text"/>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Save</button>
     </form>
   </div>
 </div>

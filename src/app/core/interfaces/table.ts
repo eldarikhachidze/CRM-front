@@ -1,19 +1,7 @@
 export interface OpenFlot {
-  [denomination: string]: number; // This allows string keys for denominations
-  quantity: number;
-}
-
-export interface Plaque {
   id: number;
-  plaques: OpenFlot;
-  plaques_total: number;
-  result: number;
-  status: string;
-  game_day: number;
-  created_at: string;
-  updated_at?: any;
-  deleted_at?: any;
-
+  [denomination: string]: number;
+  quantity: number;
 }
 
 export interface Table {
@@ -22,17 +10,21 @@ export interface Table {
   open_flot_total: number;
   open_flot: OpenFlot;
   status: boolean;
+  close_flot_id: number;
   close_flot: OpenFlot;
   close_flot_total: number;
   close_date?: string;
   close_date_updated?: string;
   fill_credit: number;
   result: number;
+  plaques_id: number;
   plaques_total: number;
   plaques: OpenFlot;
   plaques_date: string;
   plaques_updated?: string;
   table_result: number;
+  total_credit: number;
+  total_fill: number;
 }
 
 export interface TableHall {

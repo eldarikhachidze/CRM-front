@@ -13,7 +13,7 @@ import {KeyValue} from "@angular/common";
 export class EditCloseFlotComponent implements OnInit {
   form: FormGroup;
   tableData: any;
-  tableId!: number;
+  close_flot_id!: number;
 
   constructor(
     private fb: FormBuilder,
@@ -23,26 +23,29 @@ export class EditCloseFlotComponent implements OnInit {
     private router: Router,
   ) {
     this.form = this.fb.group({
-      name: [{value: '', disabled: true}, Validators.required],
       close_flot: this.fb.array([])
     });
   }
 
   ngOnInit(): void {
-    this.tableId = +this.route.snapshot.paramMap.get('id')!;
-    this.loadTableData();
+    this.close_flot_id = this.route.snapshot.params['id'];
+    this.loadCloseFlotData();
   }
 
   get closeFlot(): FormArray {
     return this.form.get('close_flot') as FormArray;
   }
 
-  loadTableData(): void {
-    this.tableService.getTable(this.tableId).subscribe(data => {
-      this.tableData = data;
-      this.form.patchValue({name: data.name});
-      this.setCloseFlotData(data.latest_close_floot.close_flot);
-    });
+  loadCloseFlotData(): void {
+    this.tableService.getCloseFlot(this.close_flot_id).subscribe(
+      res => {
+        this.tableData = res;
+        this.setCloseFlotData(this.tableData.close_flot);
+      },
+      error => {
+        this.notifyService.showError(error.error.message);
+      }
+    );
   }
 
   setCloseFlotData(closeFlotData: { [key: string]: number }): void {
@@ -66,8 +69,8 @@ export class EditCloseFlotComponent implements OnInit {
       }, {});
 
       const updatedData = {
-        table_id: this.tableId,
-        game_day: this.tableData.latest_close_floot.game_day,
+        close_flot_id: this.close_flot_id,
+        game_day: this.tableData.game_day,
         close_flot: updatedCloseFloot
       };
 
@@ -82,6 +85,5 @@ export class EditCloseFlotComponent implements OnInit {
       );
     }
   }
-
 
 }

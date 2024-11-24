@@ -40,16 +40,15 @@
               <mat-card-header>
                 <mat-card-title
                   style="display: flex; justify-content: space-between; align-items: center; width: 100%;">{{ item.name }}
-                  <button mat-icon-button [matMenuTriggerFor]="menu"
-                          aria-label="Example icon-button with a menu">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
 
                 </mat-card-title>
 
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item [routerLink]="['edit/', item.id]">Edit Close Chips</button>
-                  <button mat-menu-item [routerLink]="['edit/plaques/', item.id]">Edit Plaques
+                  <button mat-menu-item [routerLink]="['edit/', item.close_flot_id]">Edit Close Chips</button>
+                  <button mat-menu-item [routerLink]="['edit/plaques/', item.plaques_id]">Edit Plaques
                   </button>
 
                 </mat-menu>
@@ -64,7 +63,7 @@
                       </mat-card-subtitle>
                     </div>
                     <div class="status-section">
-                      <mat-card-subtitle *ngIf="!item.status">
+                      <mat-card-subtitle *ngIf="item.plaques_date">
                         Counted: {{ item.plaques_date | date: 'HH:mm' }}
                       </mat-card-subtitle>
                       <mat-card-subtitle *ngIf="item.plaques_updated">
@@ -88,8 +87,8 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let chip of item.open_flot | keyvalue : sortKeys">
-                      <td>{{ chip.key }}</td> <!-- Denomination -->
-                      <td class="center">{{ chip.value }}</td> <!-- Quantity -->
+                      <td>{{ chip.key }}</td>
+                      <td class="center">{{ chip.value }}</td>
                       <td>
                         <input
                           class="close-input"
@@ -129,8 +128,8 @@
                   <div class="result_section">
                     <div class="result">
                       <h5>Fill / Credit:
-                        <h3 class="red"> -100 </h3> /
-                        <h3 class="green"> 100 </h3>
+                        <h3 class="red"> {{item.total_fill}} </h3> /
+                        <h3 class="green"> {{item.total_credit}} </h3>
                       </h5>
                     </div>
                     <div class="result">

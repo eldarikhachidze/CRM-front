@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {catchError, Observable, throwError} from "rxjs";
 import {BaseService} from "./base.service";
-import {GameDay, TableHall} from "../interfaces/table";
+import {GameDay, OpenFlot, TableHall} from "../interfaces/table";
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +24,14 @@ export class TableService extends BaseService {
     return this.post<any>('table/close-table/', data)
   }
 
+  getCloseFlot(id: number): Observable<any> {
+    return this.get<any>(`table/close-table/${id}/`)
+  }
+
   updateCloseTable(updatedData: any): Observable<any> {
-    const id = updatedData.table_id;
+    const id = updatedData.close_flot_id;
     const data = {
-      table_id: updatedData.table_id,
+      close_flot_id: updatedData.close_flot_id,
       game_day: updatedData.game_day,
       close_flot: updatedData.close_flot
     };
@@ -44,10 +48,14 @@ export class TableService extends BaseService {
     return this.post<any>('table/plaque/', data)
   }
 
+  getPlaque(id: number): Observable<any> {
+    return this.get<any>(`table/plaque/${id}/`)
+  }
+
   updatePlaque(updatedData: any): Observable<any> {
-    const id = updatedData.table_id;
+    const id = updatedData.plaque_id;
     const data = {
-      table_id: updatedData.table_id,
+      plaque_id: updatedData.plaque_id,
       game_day: updatedData.game_day,
       plaques: updatedData.plaques
     };
