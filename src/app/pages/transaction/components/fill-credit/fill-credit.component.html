@@ -69,7 +69,6 @@
         </button>
       </div>
     </div>
-    <table>
       <table mat-table [dataSource]="fillCredit" class="mat-elevation-z8">
 
         <ng-container matColumnDef="table">
@@ -122,8 +121,6 @@
         <tr mat-row
             *matRowDef="let row; columns: ['table', 'action_time', 'game_date', 'create_date', 'create_time', 'fill_credit', 'actions']"></tr>
       </table>
-
-    </table>
   </div>
 </div>
 
